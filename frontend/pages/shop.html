@@ -124,20 +124,7 @@
     });
     
     const grid = document.getElementById('shopGrid');
-    grid.innerHTML = filtered.map(p => `
-      <article class="product-card reveal" onclick="window.location.href='product.html?id=${p._id}'">
-        <div class="product-image-container" style="border-radius: 12px; background: var(--dark2);">
-          <img src="${p.imageUrl || '../assets/images/hero_cinnamon.png'}" class="product-image" style="object-fit: contain; padding: 2.5rem;">
-        </div>
-        <div class="product-info">
-          <div>
-             <div style="font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--gold); margin-bottom: 0.3rem;">${p.grade || 'Premium'}</div>
-             <span class="product-name" style="font-size: 1.1rem;">${p.name}</span>
-          </div>
-          <span class="product-price" style="font-weight: 700; color: var(--black);">$${p.price.toFixed(2)}</span>
-        </div>
-      </article>
-    `).join('');
+    grid.innerHTML = filtered.map(p => renderProductCard(p)).join('');
     
     if (window.revealObserver) grid.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
   }
