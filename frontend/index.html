@@ -44,18 +44,18 @@
     <span class="section-tag" style="color: var(--gold); font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; font-size: 0.75rem;">✦ The Gold Standard ✦</span>
     <h2 class="section-title" style="margin-top: 1rem;">Why Ceylon Cinnamon?</h2>
   </div>
-  <div class="product-grid">
-    <div class="reveal" style="text-align: center; padding: 2rem;">
+  <div class="product-grid" style="justify-content: center;">
+    <div class="reveal" style="text-align: center; padding: 2rem; max-width: 400px;">
       <div style="font-size: 3rem; margin-bottom: 1.5rem;">🌱</div>
       <h3 style="font-family: 'Playfair Display', serif; margin-bottom: 1rem;">Ultra-Low Coumarin</h3>
       <p style="color: var(--text-muted); font-size: 0.9rem;">Unlike Cassia, Ceylon cinnamon contains negligible levels of coumarin, making it the safest choice for daily consumption.</p>
     </div>
-    <div class="reveal" style="text-align: center; padding: 2rem;">
+    <div class="reveal" style="text-align: center; padding: 2rem; max-width: 400px;">
       <div style="font-size: 3rem; margin-bottom: 1.5rem;">✨</div>
       <h3 style="font-family: 'Playfair Display', serif; margin-bottom: 1rem;">Delicate Aroma</h3>
       <p style="color: var(--text-muted); font-size: 0.9rem;">Recognized by its paper-thin layers and complex, floral-sweet profile that enhances both savory and sweet dishes.</p>
     </div>
-    <div class="reveal" style="text-align: center; padding: 2rem;">
+    <div class="reveal" style="text-align: center; padding: 2rem; max-width: 400px;">
       <div style="font-size: 3rem; margin-bottom: 1.5rem;">🌍</div>
       <h3 style="font-family: 'Playfair Display', serif; margin-bottom: 1rem;">Ethically Sourced</h3>
       <p style="color: var(--text-muted); font-size: 0.9rem;">We work directly with traditional farmers in Sri Lanka to ensure fair wages and sustainable harvesting practices.</p>
@@ -143,23 +143,18 @@
 
   async function loadFeatured() {
     const grid = document.getElementById('featuredGrid');
+    let products = [];
     try {
       const data = await API.get('/products?featured=true&limit=3');
-      const products = (data.success && data.products.length) ? data.products : STATIC_PRODUCTS.slice(0, 3);
-      grid.innerHTML = products.map(p => `
-        <article class="product-card reveal" onclick="window.location.href='pages/product.html?id=${p._id}'">
-          <div class="product-image-container" style="border-radius: 12px; background: var(--dark2);">
-            <img src="${p.imageUrl || 'assets/images/hero_cinnamon.png'}" class="product-image" style="object-fit: contain; padding: 2rem;">
-          </div>
-          <div class="product-info">
-            <span class="product-name">${p.name}</span>
-            <span class="product-price">$${p.price.toFixed(2)}</span>
-          </div>
-        </article>
-      `).join('');
-      // Observe new cards
-      grid.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+      products = (data.success && data.products.length) ? data.products : STATIC_PRODUCTS.filter(p => p.featured).slice(0, 3);
     } catch {
+      products = STATIC_PRODUCTS.filter(p => p.featured).slice(0, 3);
+    }
+    
+    if (products.length) {
+      grid.innerHTML = products.map(p => renderProductCard(p)).join('');
+      grid.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+    } else {
       grid.innerHTML = '<p>Check your connection to see our latest products.</p>';
     }
   }

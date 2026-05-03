@@ -69,13 +69,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const langSelector = document.createElement('div');
     langSelector.className = 'lang-selector';
     langSelector.innerHTML = `
-      <select id="currencySelector" onchange="window.setCurrency(this.value)" style="margin-right:8px; border:none; background:none; font-size:0.7rem; cursor:pointer;">
+      <select id="currencySelector" onchange="window.setCurrency(this.value)" style="margin-right:8px; border:none; background:none; font-size:0.7rem; cursor:pointer; color:inherit;">
         <option value="USD">USD ($)</option>
         <option value="EUR">EUR (€)</option>
         <option value="PLN">PLN (zł)</option>
         <option value="LKR">LKR (Rs)</option>
       </select>
-      <select id="googleLangSelector" onchange="doGTranslate(this.value)" style="border:none; background:none; font-size:0.7rem; cursor:pointer;">
+      <select id="googleLangSelector" onchange="doGTranslate(this.value)" style="border:none; background:none; font-size:0.7rem; cursor:pointer; color:inherit;">
         <option value="en">EN</option>
         <option value="de">DE</option>
         <option value="pl">PL</option>

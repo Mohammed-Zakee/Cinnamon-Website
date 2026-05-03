@@ -44,21 +44,45 @@ nav.scrolled {
 .logo {
   font-family: 'Playfair Display', serif;
   font-size: 1.8rem; font-weight: 700;
-  color: var(--black); text-decoration: none;
+  color: var(--white); text-decoration: none;
   letter-spacing: -0.02em;
 }
-.logo span { color: var(--gold); font-weight: 400; }
+.logo span { color: var(--gold2); font-weight: 400; }
+
+nav.scrolled .logo {
+  color: var(--black);
+}
 
 .nav-links { display: flex; gap: 3rem; list-style: none; }
 .nav-links a {
-  color: var(--text); text-decoration: none;
+  color: rgba(255,255,255,0.8); text-decoration: none;
   font-size: 0.75rem; letter-spacing: 0.15em;
   text-transform: uppercase; font-weight: 500;
+  transition: var(--transition);
 }
-.nav-links a:hover { color: var(--gold); }
+.nav-links a:hover { color: var(--gold2); }
+.nav-links a.active { color: var(--white); border-bottom: 1px solid var(--white); }
 
-.nav-actions { display: flex; align-items: center; gap: 2rem; }
-.nav-icon { background: none; border: none; cursor: pointer; position: relative; }
+nav.scrolled .nav-links a {
+  color: var(--text);
+}
+nav.scrolled .nav-links a.active {
+  color: var(--gold); border-bottom-color: var(--gold);
+}
+
+.nav-actions { display: flex; align-items: center; gap: 2rem; color: var(--white); }
+nav.scrolled .nav-actions { color: var(--text); }
+
+.nav-icon { background: none; border: none; cursor: pointer; position: relative; color: inherit; display: flex; align-items: center; }
+.nav-btn {
+  background: var(--gold2); color: #fff; border: none;
+  padding: 0.6rem 1.5rem; font-size: 0.7rem; font-weight: 600;
+  text-transform: uppercase; letter-spacing: 0.1em; cursor: pointer;
+  transition: var(--transition); border-radius: 4px;
+}
+.nav-btn:hover { background: var(--white); color: var(--black); }
+nav.scrolled .nav-btn { background: var(--black); }
+nav.scrolled .nav-btn:hover { background: var(--gold); color: #fff; }
 .cart-count {
   position: absolute; top: -8px; right: -8px;
   background: var(--gold); color: #fff;
@@ -67,18 +91,19 @@ nav.scrolled {
 
 /* ─── Hero ───────────────────────────────────────────────── */
 .hero {
-  height: 100vh;
-  display: flex; align-items: center;
-  padding: 0 5%;
+  min-height: 100vh;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 8rem 5% 5rem;
   background: #000;
   color: #fff;
   position: relative;
+  gap: 5%;
 }
-.hero-content { position: relative; z-index: 10; max-width: 800px; }
+.hero-content { position: relative; z-index: 10; max-width: 600px; flex: 1; }
 .hero h1 {
   font-family: 'Playfair Display', serif;
-  font-size: clamp(3.5rem, 8vw, 7rem);
-  line-height: 0.9; margin-bottom: 2rem;
+  font-size: clamp(3rem, 7vw, 6rem);
+  line-height: 1; margin-bottom: 2rem;
   letter-spacing: -0.04em;
 }
 .hero h1 span { color: var(--gold2); font-style: italic; font-weight: 400; }
@@ -87,10 +112,28 @@ nav.scrolled {
   margin-bottom: 3rem;
 }
 .hero-visual {
-  position: absolute; right: 5%; top: 50%; transform: translateY(-50%);
-  width: 40%; height: 70%;
+  flex: 1;
+  max-width: 500px;
+  height: 60vh;
   background-size: cover; background-position: center;
 }
+
+/* ─── Page Hero (Subpages) ──────────────────────────────── */
+.page-hero {
+  height: 60vh;
+  display: flex; align-items: center; justify-content: center;
+  text-align: center; background: #000; color: #fff;
+  position: relative; overflow: hidden;
+}
+.page-hero-bg {
+  position: absolute; inset: 0;
+  background: linear-gradient(to bottom, rgba(0,0,0,0.5), #000), url('../assets/images/hero_cinnamon.png');
+  background-size: cover; background-position: center;
+  opacity: 0.4;
+}
+.page-hero-content { position: relative; z-index: 10; }
+.page-hero h1 { font-family: 'Playfair Display', serif; font-size: 4rem; margin-bottom: 1rem; }
+.page-hero .gold { color: var(--gold2); }
 
 /* ─── Buttons ────────────────────────────────────────────── */
 .btn-primary {
@@ -144,6 +187,45 @@ nav.scrolled {
 .product-info { display: flex; justify-content: space-between; align-items: baseline; }
 .product-name { font-size: 1rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; }
 .product-price { color: var(--text-muted); font-size: 0.9rem; }
+
+/* ─── Premium Product Cards ──────────────────────────────── */
+.card-img {
+  position: relative; aspect-ratio: 1/1;
+  display: flex; align-items: center; justify-content: center;
+  overflow: hidden; border-radius: 12px; margin-bottom: 1.5rem;
+  background: var(--dark);
+}
+.card-img-bg {
+  position: absolute; inset: 0; opacity: 0.15;
+  transition: var(--transition);
+}
+.product-card:hover .card-img-bg { opacity: 0.25; transform: scale(1.1); }
+
+.card-badge {
+  position: absolute; top: 1rem; right: 1rem; z-index: 10;
+  background: var(--black); color: #fff;
+  font-size: 0.6rem; font-weight: 700; padding: 4px 8px;
+  border-radius: 20px; letter-spacing: 0.1em;
+}
+.card-badge.rare { background: var(--gold); }
+
+.card-emoji { font-size: 4rem; position: relative; z-index: 2; }
+.card-grade { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.2em; color: var(--gold); font-weight: 700; margin-bottom: 0.5rem; }
+.card-name { font-family: 'Playfair Display', serif; font-size: 1.4rem; font-weight: 700; margin-bottom: 0.8rem; }
+.card-desc { font-size: 0.85rem; color: var(--text-muted); line-height: 1.5; margin-bottom: 1.5rem; height: 3.2rem; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
+
+.card-foot { display: flex; justify-content: space-between; align-items: center; }
+.card-price { font-size: 1.1rem; font-weight: 700; }
+.card-price small { font-size: 0.7rem; color: var(--text-muted); font-weight: 400; margin-left: 4px; }
+
+.card-add {
+  width: 32px; height: 32px; border-radius: 50%;
+  border: 1px solid var(--border); background: none;
+  cursor: pointer; font-size: 1.2rem; display: flex;
+  align-items: center; justify-content: center;
+  transition: var(--transition);
+}
+.card-add:hover { background: var(--black); color: #fff; border-color: var(--black); transform: rotate(90deg); }
 
 /* ─── Cart Drawer ────────────────────────────────────────── */
 .cart-sidebar {
@@ -242,8 +324,26 @@ nav.scrolled {
 }
 .bump { animation: bump 0.3s ease-out; }
 
-@media (max-width: 1000px) {
-  .hero-visual { display: none; }
+@media (max-width: 1100px) {
+  .hero {
+    flex-direction: column;
+    text-align: center;
+    justify-content: center;
+    padding-top: 10rem;
+  }
+  .hero-content {
+    max-width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 4rem;
+  }
+  .hero p { margin-left: auto; margin-right: auto; }
+  .hero-visual {
+    width: 100%;
+    height: 40vh;
+    max-width: 450px;
+  }
   .cart-sidebar { width: 100%; right: -100%; }
 }
 
