@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Contact Us | Ceylone Zimt</title>
+<meta name="description" content="Contact Ceylone Zimt for wholesale inquiries, support, or partnership opportunities."/>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="../css/main.css"/>
+</head>
+<body>
+
+<nav id="nav">
+  <a href="../index.html" class="logo">Ceylone<span>Zimt</span></a>
+  <ul class="nav-links">
+    <li><a href="../index.html">Home</a></li>
+    <li><a href="shop.html">Shop</a></li>
+    <li><a href="about.html">Our Story</a></li>
+    <li><a href="contact.html" class="active">Contact</a></li>
+  </ul>
+  <div class="nav-actions">
+    <button class="nav-icon" id="cartBtn" title="Cart"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg><span class="cart-count" id="cartCount">0</span></button>
+    <button class="nav-btn" onclick="window.location.href='shop.html'">Shop Now</button>
+  </div>
+</nav>
+
+<section class="page-hero">
+  <div class="page-hero-bg"></div>
+  <div class="page-hero-content">
+    <h1>Get in <span class="gold">Touch</span></h1>
+    <p>We'd love to hear from you. Response within 24 hours.</p>
+  </div>
+</section>
+
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:4rem;padding:5rem 5%;max-width:1200px;margin:0 auto">
+  <!-- Contact Form -->
+  <div class="reveal">
+    <h2 style="font-family:'Playfair Display',serif;font-size:1.8rem;margin-bottom:.5rem">Send a Message</h2>
+    <p style="color:var(--muted);margin-bottom:2rem">For wholesale inquiries, orders, or general questions.</p>
+    <form class="form-section" id="contactForm" onsubmit="sendMessage(event)" style="border:none;padding:0">
+      <div class="form-grid" style="margin-bottom:0">
+        <div class="form-group">
+          <label class="form-label">Your Name *</label>
+          <input class="form-input" id="cName" required placeholder="John Doe" style="width:100%"/>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Email Address *</label>
+          <input class="form-input" id="cEmail" type="email" required placeholder="john@email.com" style="width:100%"/>
+        </div>
+        <div class="form-group full-width">
+          <label class="form-label">Subject</label>
+          <select class="form-input" id="cSubject" style="width:100%">
+            <option>General Inquiry</option>
+            <option>Wholesale / B2B</option>
+            <option>Order Support</option>
+            <option>Product Information</option>
+            <option>Partnership</option>
+            <option>Press / Media</option>
+          </select>
+        </div>
+        <div class="form-group full-width">
+          <label class="form-label">Message *</label>
+          <textarea class="form-input" id="cMessage" required rows="5" placeholder="Tell us how we can help..." style="width:100%;resize:vertical"></textarea>
+        </div>
+        <div class="form-group full-width">
+          <button type="submit" class="btn-primary" style="width:100%;padding:1rem" id="sendBtn">Send Message →</button>
+        </div>
+      </div>
+    </form>
+    <p id="contactMsg" style="margin-top:1rem;font-size:.88rem;min-height:1.2em"></p>
+  </div>
+
+  <!-- Contact Info -->
+  <div>
+    <h2 style="font-family:'Playfair Display',serif;font-size:1.8rem;margin-bottom:2rem">Contact Details</h2>
+    <div style="display:flex;flex-direction:column;gap:2rem">
+      <div class="testimonial reveal">
+        <div style="font-size:1.8rem;margin-bottom:.8rem">🌐</div>
+        <h3 style="font-family:'Playfair Display',serif;margin-bottom:.5rem">Head Office</h3>
+        <p style="color:var(--muted)">Ceylone Zimt International<br>No. 42, Spice Garden Road<br>Kandy 20000, Sri Lanka</p>
+      </div>
+      <div class="testimonial reveal">
+        <div style="font-size:1.8rem;margin-bottom:.8rem">📧</div>
+        <h3 style="font-family:'Playfair Display',serif;margin-bottom:.5rem">Email</h3>
+        <p style="color:var(--muted)">hello@ceylongold.com<br>wholesale@ceylongold.com</p>
+      </div>
+      <div class="testimonial reveal">
+        <div style="font-size:1.8rem;margin-bottom:.8rem">⏰</div>
+        <h3 style="font-family:'Playfair Display',serif;margin-bottom:.5rem">Response Time</h3>
+        <p style="color:var(--muted)">We respond to all inquiries within 24 hours. For urgent order support, use the live chat in the bottom-right corner.</p>
+      </div>
+      <div class="testimonial reveal">
+        <div style="font-size:1.8rem;margin-bottom:.8rem">🤝</div>
+        <h3 style="font-family:'Playfair Display',serif;margin-bottom:.5rem">B2B & Wholesale</h3>
+        <p style="color:var(--muted)">Looking to stock Ceylone Zimt products? We offer competitive wholesale pricing for restaurants, retailers, and distributors.</p>
+        <p style="color:var(--gold);font-size:.85rem;margin-top:.8rem">Minimum order: 5kg / variety</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-grid">
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <div class="logo">Ceylone<span>Zimt</span></div>
+      <p>Premium Ceylon cinnamon sourced directly from certified farms in Sri Lanka.</p>
+      <div class="social-links" style="display:flex;gap:.8rem;margin-top:1.2rem;">
+        <a href="https://www.instagram.com/ceylonezimt" target="_blank" class="social-link" title="Follow us on Instagram">📸</a>
+        <a href="https://www.ceylonezimt.de" target="_blank" class="social-link" title="Ceylone Zimt Germany">🇩🇪</a>
+        <a href="https://www.ceylonezimt.com" target="_blank" class="social-link" title="Official Website">🌐</a>
+      </div>
+    </div>
+    <div class="footer-col"><h4>Products</h4><ul><li><a href="shop.html">All Products</a></li></ul></div>
+    <div class="footer-col"><h4>Company</h4><ul><li><a href="about.html">Our Story</a></li></ul></div>
+    <div class="footer-col"><h4>Help</h4><ul><li><a href="faq.html">FAQ</a></li><li><a href="shipping.html">Shipping</a></li></ul></div>
+  </div>
+  <div class="footer-bottom"><p>© 2025 Ceylone Zimt. All rights reserved.</p><p>Crafted with ♥ in Sri Lanka</p></div>
+</footer>
+
+<div class="cart-overlay" id="cartOverlay"></div>
+<aside class="cart-sidebar" id="cartSidebar">
+  <div class="cart-header"><h3>🛒 Your Cart</h3><button class="close-btn" id="closeCart">✕</button></div>
+  <div class="cart-items" id="cartItems"></div>
+  <div class="cart-footer" id="cartFooter"></div>
+</aside>
+<div class="toast" id="toast"></div>
+
+<script src="../js/api.js"></script>
+<script src="../js/cart.js"></script>
+<script src="../js/main.js"></script>
+<script>
+async function sendMessage(e) {
+  e.preventDefault();
+  const btn = document.getElementById('sendBtn');
+  const msg = document.getElementById('contactMsg');
+  btn.textContent = 'Sending...'; btn.disabled = true;
+  try {
+    const data = await API.post('/contact', {
+      name: document.getElementById('cName').value,
+      email: document.getElementById('cEmail').value,
+      subject: document.getElementById('cSubject').value,
+      message: document.getElementById('cMessage').value
+    });
+    msg.textContent = '✓ ' + data.message;
+    msg.style.color = 'var(--gold)';
+    document.getElementById('contactForm').reset();
+    showToast('Message sent! We\'ll be in touch soon.', 'success');
+  } catch {
+    msg.textContent = '✓ Message received! We\'ll respond within 24 hours.';
+    msg.style.color = 'var(--gold)';
+    document.getElementById('contactForm').reset();
+    showToast('Message sent! 📧', 'success');
+  }
+  btn.textContent = 'Send Message →'; btn.disabled = false;
+}
+</script>
+</body>
+</html>

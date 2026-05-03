@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Admin Panel | Ceylone Zimt</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="css/main.css"/>
+<style>
+  body { background: #fff; padding: 4rem 5%; }
+  .admin-header { display: flex; justify-content: space-between; align-items: baseline; border-bottom: 1px solid var(--border); padding-bottom: 2rem; margin-bottom: 4rem; }
+  .admin-header h1 { font-family: 'Playfair Display', serif; font-size: 2.5rem; }
+  
+  .admin-grid { display: grid; grid-template-columns: 1fr 350px; gap: 4rem; }
+  
+  .product-list { margin-bottom: 4rem; }
+  .product-item { display: flex; align-items: center; justify-content: space-between; padding: 1.5rem 0; border-bottom: 1px solid var(--border); }
+  .product-item img { width: 50px; height: 50px; object-fit: cover; background: #f0f0f0; margin-right: 1.5rem; }
+  
+  .form-card { background: #f9f9f9; padding: 2.5rem; }
+  .form-card h3 { font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 2rem; }
+  
+  .form-group { margin-bottom: 1.5rem; }
+  .form-group label { display: block; font-size: 0.75rem; font-weight: 600; text-transform: uppercase; margin-bottom: 0.5rem; color: #888; }
+  .form-group input, .form-group textarea, .form-group select { width: 100%; padding: 1rem; border: 1px solid #ddd; background: #fff; font-size: 0.9rem; outline: none; }
+  
+  .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 2rem; }
+  .stat-card { background: #000; color: #fff; padding: 1.5rem; text-align: center; }
+  .stat-val { font-size: 1.5rem; font-weight: 700; margin-bottom: 0.2rem; }
+  .stat-lbl { font-size: 0.6rem; text-transform: uppercase; opacity: 0.7; letter-spacing: 0.1em; }
+  
+  .btn-sm { padding: 0.5rem 1rem; font-size: 0.7rem; }
+</style>
+</head>
+<body>
+
+<div class="admin-header">
+  <h1>Admin Portal</h1>
+  <a href="index.html" class="btn-secondary btn-sm">Back to site</a>
+</div>
+
+<div class="admin-grid">
+  <main>
+    <div class="product-list">
+      <h3 style="margin-bottom: 2rem; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.1em;">Collection Inventory</h3>
+      <div id="productList">
+        <!-- Dynamic list -->
+      </div>
+    </div>
+  </main>
+  
+  <aside>
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-val" id="totalViews">0</div>
+        <div class="stat-lbl">Total Views</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-val" id="totalProducts">0</div>
+        <div class="stat-lbl">Products</div>
+      </div>
+    </div>
+    
+    <div class="form-card">
+      <h3 id="formTitle">Manage Product</h3>
+      <form id="productForm" onsubmit="saveProduct(event)">
+        <input type="hidden" id="pid">
+        <div class="form-group"><label>Name</label><input required id="pName"></div>
+        <div class="form-group"><label>Price ($)</label><input type="number" step="0.01" required id="pPrice"></div>
+        <div class="form-group"><label>Category</label>
+          <select id="pCat">
+            <option value="quill">Quills</option>
+            <option value="oil">Bark Oil</option>
+            <option value="pieces">Quillings</option>
+          </select>
+        </div>
+        <div class="form-group"><label>Description</label><textarea id="pDesc" rows="4"></textarea></div>
+        <button type="submit" class="btn-primary" style="width: 100%;">Save Product</button>
+      </form>
+    </div>
+  </aside>
+</div>
+
+<script src="js/api.js"></script>
+<script>
+  async function loadAdmin() {
+    const res = await API.get('/settings');
+    if (res.settings) {
+      document.getElementById('totalViews').innerText = res.settings.totalViews || 0;
+    }
+    
+    const pres = await API.get('/products?all=true');
+    const products = pres.products || [];
+    document.getElementById('totalProducts').innerText = products.length;
+    
+    const list = document.getElementById('productList');
+    list.innerHTML = products.map(p => `
+      <div class="product-item">
+        <div style="display: flex; align-items: center;">
+          <img src="${p.imageUrl || 'assets/images/hero_cinnamon.png'}">
+          <div>
+            <div style="font-weight: 600; font-size: 0.9rem;">${p.name}</div>
+            <div style="font-size: 0.8rem; color: #888;">$${p.price.toFixed(2)}</div>
+          </div>
+        </div>
+        <div>
+          <button class="btn-secondary btn-sm" onclick="editProd('${p._id}')">Edit</button>
+        </div>
+      </div>
+    `).join('') || '<p style="color: #888;">No products found.</p>';
+  }
+
+  async function editProd(id) {
+    const res = await API.get('/products/' + id);
+    const p = res.product;
+    document.getElementById('pid').value = p._id;
+    document.getElementById('pName').value = p.name;
+    document.getElementById('pPrice').value = p.price;
+    document.getElementById('pCat').value = p.category;
+    document.getElementById('pDesc').value = p.description;
+    document.getElementById('formTitle').textContent = `Editing ${p.name}`;
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  async function saveProduct(e) {
+    e.preventDefault();
+    const id = document.getElementById('pid').value;
+    const data = {
+      name: document.getElementById('pName').value,
+      price: document.getElementById('pPrice').value,
+      category: document.getElementById('pCat').value,
+      description: document.getElementById('pDesc').value
+    };
+    
+    try {
+      if (id) await API.put('/products/' + id, data);
+      else await API.post('/products', data);
+      location.reload();
+    } catch (err) { alert(err.message); }
+  }
+
+  loadAdmin();
+</script>
+</body>
+</html>

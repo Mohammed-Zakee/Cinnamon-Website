@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Product | Ceylone Zimt</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="../css/main.css"/>
+<style>
+  .product-detail-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    padding: 2rem 5% 8rem;
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+  .product-detail-visual {
+    position: sticky;
+    top: 10rem;
+    height: calc(100vh - 15rem);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 24px;
+    overflow: hidden;
+  }
+  .product-detail-info {
+    padding-top: 2rem;
+  }
+  .product-detail-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 3.5rem;
+    margin-bottom: 1rem;
+    letter-spacing: -0.02em;
+  }
+  .product-detail-price {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 2rem;
+    color: var(--gold);
+  }
+  .qty-selector {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    margin-bottom: 3rem;
+    padding: 1.5rem;
+    background: var(--dark);
+    border-radius: 12px;
+  }
+  .qty-control {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+  }
+  .add-to-cart-btn {
+    width: 100%;
+    padding: 1.5rem;
+    background: var(--black);
+    color: #fff;
+    border: none;
+    border-radius: 12px;
+    font-weight: 700;
+    font-size: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    cursor: pointer;
+    transition: var(--transition);
+    margin-bottom: 1rem;
+  }
+  .add-to-cart-btn:hover { background: var(--gold); transform: translateY(-3px); }
+  
+  .benefit-list {
+    list-style: none;
+    margin: 3rem 0;
+  }
+  .benefit-list li {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+    font-size: 0.95rem;
+    color: var(--text-muted);
+  }
+  .benefit-list li::before { content: '✓'; color: var(--success); font-weight: bold; }
+
+  @media (max-width: 1000px) {
+    .product-detail-layout { grid-template-columns: 1fr; }
+    .product-detail-visual { position: static; height: 400px; }
+  }
+</style>
+</head>
+<body>
+
+<nav id="nav">
+  <a href="../index.html" class="logo">Ceylone<span>Zimt</span></a>
+  <ul class="nav-links">
+    <li><a href="../index.html">Home</a></li>
+    <li><a href="shop.html">Shop</a></li>
+    <li><a href="about.html">Our Story</a></li>
+    <li><a href="contact.html">Contact</a></li>
+  </ul>
+  <div class="nav-actions">
+    <button class="nav-icon" id="cartBtn">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+      <span class="cart-count">0</span>
+    </button>
+  </div>
+</nav>
+
+<div style="padding:8rem 5% 0;"><a href="shop.html" style="color:var(--text-muted);text-decoration:none;font-size:.8rem; text-transform: uppercase; letter-spacing: 0.1em;">← Back to Shop</a></div>
+
+<div class="product-detail-layout" id="productLayout">
+  <div class="loading-placeholder" style="grid-column:1/-1;padding:6rem; text-align: center;">
+    <p>Gently gathering our finest quills...</p>
+  </div>
+</div>
+
+<section class="section" id="relatedSection" style="display:none; border-top: 1px solid var(--border);">
+  <div style="text-align: center; margin-bottom: 4rem;">
+    <h2 style="font-family: 'Playfair Display', serif; font-size: 2.5rem;">Recommended For You</h2>
+  </div>
+  <div class="product-grid" id="relatedGrid"></div>
+</section>
+
+<footer>
+  <div class="footer-bottom" style="padding: 4rem 5%; text-align: center; border-top: 1px solid var(--border);"><p>© 2025 Ceylone Zimt. All rights reserved.</p></div>
+</footer>
+
+<div class="cart-overlay" id="cartOverlay"></div>
+<aside class="cart-sidebar" id="cartSidebar">
+  <div class="cart-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 3rem;">
+    <h3 style="font-family: 'Playfair Display', serif;">Your Cart</h3>
+    <button onclick="closeCart()" style="background: none; border: none; font-size: 1.2rem; cursor: pointer;">✕</button>
+  </div>
+  <div id="cartItems"></div>
+  <div id="cartFooter"></div>
+</aside>
+<div class="toast" id="toast"></div>
+
+<script src="../js/api.js"></script>
+<script src="../js/cart.js"></script>
+<script src="../js/main.js"></script>
+<script>
+let currentProduct = null;
+let selectedQty = 1;
+
+async function loadProduct() {
+  const params = new URLSearchParams(window.location.search);
+  const id = params.get('id');
+  if (!id) { window.location.href = 'shop.html'; return; }
+
+  try {
+    const data = await API.get(`/products/${id}`);
+    if (data.success) currentProduct = data.product;
+  } catch {
+    currentProduct = STATIC_PRODUCTS.find(p => p._id === id || p.slug === id);
+  }
+
+  if (!currentProduct) { showToast('Product not found', 'error'); return; }
+  document.title = `${currentProduct.name} | Ceylone Zimt`;
+  renderProduct();
+  loadRelated();
+}
+
+function renderProduct() {
+  const p = currentProduct;
+  const stars = '★'.repeat(Math.round(p.rating || 4.8)) + '☆'.repeat(5 - Math.round(p.rating || 4.8));
+  const benefits = (p.benefits || ['Ethically sourced from Sri Lanka', 'Certified Organic and Pure', 'Paper-thin layers for maximum aroma']).map(b => `<li>${b}</li>`).join('');
+
+  document.getElementById('productLayout').innerHTML = `
+    <div class="product-detail-visual reveal" style="background:radial-gradient(circle, ${p.colorFrom || '#f9f9f9'}, ${p.colorTo || '#f0f0f0'})">
+      <img src="${p.imageUrl || '../assets/images/hero_cinnamon.png'}" style="max-height:70%; max-width:80%; object-fit:contain;" alt="${p.name}"/>
+    </div>
+    <div class="product-detail-info reveal">
+      <div style="text-transform: uppercase; letter-spacing: 0.2em; font-size: 0.7rem; color: var(--gold); font-weight: 700; margin-bottom: 1rem;">${p.grade || 'Premium Grade'}</div>
+      <h1 class="product-detail-name">${p.name}</h1>
+      <div style="margin-bottom: 2rem;">
+        <span style="color:var(--gold);">${stars}</span>
+        <span style="color:var(--text-muted); font-size: 0.85rem; margin-left: 0.5rem;">${p.rating || 4.8} / 5.0</span>
+      </div>
+      <div class="product-detail-price">${window.formatPrice ? window.formatPrice(p.price) : '$' + p.price.toFixed(2)} <span style="font-size: 0.9rem; font-weight: 400; color: var(--text-muted);">/ ${p.unit || '100g'}</span></div>
+      <p style="font-size: 1.1rem; color: var(--text-muted); line-height: 1.8; margin-bottom: 2.5rem;">${p.description || 'Experience the world\'s finest cinnamon, directly from the highlands of Sri Lanka.'}</p>
+      
+      <ul class="benefit-list">${benefits}</ul>
+      
+      <div class="qty-selector">
+        <span style="font-weight: 600; font-size: 0.9rem;">Quantity</span>
+        <div class="qty-control">
+          <button class="qty-btn" onclick="changeQty(-1)" style="width:35px; height:35px; border:1px solid #ddd; background:none; border-radius:50%; cursor:pointer;">−</button>
+          <span id="qtyDisplay" style="font-weight: 700; min-width: 20px; text-align: center;">1</span>
+          <button class="qty-btn" onclick="changeQty(1)" style="width:35px; height:35px; border:1px solid #ddd; background:none; border-radius:50%; cursor:pointer;">+</button>
+        </div>
+      </div>
+      
+      <div class="product-actions">
+        <button class="add-to-cart-btn" onclick="addCurrentToCart()">Add to Cart — <span id="btnPrice">${window.formatPrice ? window.formatPrice(p.price) : '$' + p.price.toFixed(2)}</span></button>
+        <button onclick="buyNow()" style="width: 100%; padding: 1.2rem; background: none; border: 1px solid var(--black); border-radius: 12px; font-weight: 600; cursor: pointer; text-transform: uppercase; letter-spacing: 0.1em; transition: var(--transition);">Buy it Now</button>
+      </div>
+    </div>
+  `;
+  if (window.revealObserver) document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+}
+
+function changeQty(delta) {
+  selectedQty = Math.max(1, selectedQty + delta);
+  document.getElementById('qtyDisplay').textContent = selectedQty;
+  const btnPrice = document.getElementById('btnPrice');
+  if (btnPrice && currentProduct) {
+    btnPrice.textContent = window.formatPrice ? window.formatPrice(currentProduct.price * selectedQty) : '$' + (currentProduct.price * selectedQty).toFixed(2);
+  }
+}
+
+function addCurrentToCart() {
+  if (!currentProduct) return;
+  Cart.add(currentProduct, selectedQty);
+  openCart();
+}
+
+function buyNow() {
+  if (!currentProduct) return;
+  Cart.clear();
+  Cart.add(currentProduct, selectedQty);
+  window.location.href = 'checkout.html';
+}
+
+async function loadRelated() {
+  try {
+    const data = await API.get(`/products?limit=4`);
+    const related = (data.success ? data.products : STATIC_PRODUCTS)
+      .filter(p => (p._id || p.slug) !== (currentProduct._id || currentProduct.slug))
+      .slice(0, 3);
+    if (related.length > 0) {
+      document.getElementById('relatedSection').style.display = 'block';
+      const grid = document.getElementById('relatedGrid');
+      grid.innerHTML = related.map(p => `
+        <article class="product-card reveal" onclick="window.location.href='product.html?id=${p._id}'">
+          <div class="product-image-container" style="border-radius: 12px; background: var(--dark2);">
+            <img src="${p.imageUrl || '../assets/images/hero_cinnamon.png'}" class="product-image" style="object-fit: contain; padding: 2rem;">
+          </div>
+          <div class="product-info">
+            <span class="product-name">${p.name}</span>
+            <span class="product-price">$${p.price.toFixed(2)}</span>
+          </div>
+        </article>
+      `).join('');
+      if (window.revealObserver) grid.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+    }
+  } catch {}
+}
+
+loadProduct();
+</script>
+</body>
+</html>

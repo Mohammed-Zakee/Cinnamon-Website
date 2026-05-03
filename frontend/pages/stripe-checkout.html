@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stripe Checkout | Secure Payment</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background-color: #f6f9fc;
+            display: flex;
+            min-height: 100vh;
+            color: #1a1f36;
+        }
+        .container {
+            display: flex;
+            width: 100%;
+            max-width: 1000px;
+            margin: 0 auto;
+            background: #fff;
+            box-shadow: 0 15px 35px rgba(50, 50, 93, 0.1), 0 5px 15px rgba(0, 0, 0, 0.07);
+        }
+        .left-panel {
+            width: 45%;
+            background-color: #f6f9fc;
+            padding: 3rem;
+            border-right: 1px solid #e6ebf1;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+        }
+        .right-panel {
+            width: 55%;
+            padding: 3rem;
+            background-color: #ffffff;
+        }
+        .header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 2rem;
+        }
+        .store-logo {
+            width: 48px;
+            height: 48px;
+            background-color: #1a1f36;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            font-size: 1.2rem;
+        }
+        .store-name {
+            font-weight: 500;
+            font-size: 1.1rem;
+            color: #30313d;
+        }
+        .amount-section {
+            margin-top: 1rem;
+            margin-bottom: 3rem;
+        }
+        .amount-label {
+            color: #697386;
+            font-size: 0.95rem;
+            margin-bottom: 0.5rem;
+        }
+        .amount-value {
+            font-size: 2.25rem;
+            font-weight: 600;
+            letter-spacing: -1px;
+            color: #1a1f36;
+        }
+        .powered-by {
+            margin-top: auto;
+            font-size: 0.85rem;
+            color: #697386;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .form-title {
+            font-size: 1.35rem;
+            font-weight: 500;
+            margin-bottom: 1.5rem;
+            color: #30313d;
+        }
+        .fieldset {
+            margin-bottom: 1.5rem;
+        }
+        .field-label {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: #30313d;
+            margin-bottom: 0.5rem;
+        }
+        .input-group {
+            border: 1px solid #e6ebf1;
+            border-radius: 5px;
+            background: #fff;
+            overflow: hidden;
+            box-shadow: 0 1px 3px rgba(50, 50, 93, 0.05), 0 1px 0 rgba(0, 0, 0, 0.02);
+            transition: box-shadow 0.15s ease, border-color 0.15s ease;
+        }
+        .input-group:focus-within {
+            border-color: #6772e5;
+            box-shadow: 0 1px 3px rgba(50, 50, 93, 0.05), 0 1px 0 rgba(0, 0, 0, 0.02), 0 0 0 1px #6772e5;
+        }
+        .form-input {
+            width: 100%;
+            padding: 12px 14px;
+            border: none;
+            font-size: 1rem;
+            font-family: inherit;
+            color: #30313d;
+            box-sizing: border-box;
+            outline: none;
+        }
+        .form-input::placeholder {
+            color: #8792a2;
+        }
+        .row {
+            display: flex;
+        }
+        .col {
+            flex: 1;
+        }
+        .border-left {
+            border-left: 1px solid #e6ebf1;
+        }
+        .border-top {
+            border-top: 1px solid #e6ebf1;
+        }
+        .pay-btn {
+            background-color: #0074d4;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            width: 100%;
+            padding: 14px;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
+            transition: all 0.15s ease;
+            margin-top: 1rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .pay-btn:hover {
+            background-color: #0063b5;
+            transform: translateY(-1px);
+            box-shadow: 0 7px 14px rgba(50, 50, 93, 0.1), 0 3px 6px rgba(0, 0, 0, 0.08);
+        }
+        .pay-btn:active {
+            background-color: #005295;
+            transform: translateY(1px);
+            box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
+        }
+        .pay-btn:disabled {
+            background-color: #7ab3e6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Loading Spinner */
+        .spinner {
+            border: 3px solid rgba(255,255,255,0.3);
+            border-radius: 50%;
+            border-top: 3px solid #fff;
+            width: 20px;
+            height: 20px;
+            animation: spin 1s linear infinite;
+            display: none;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .test-mode-badge {
+            background-color: #e3e8ee;
+            color: #4f566b;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            margin-left: auto;
+        }
+
+        @media(max-width: 768px) {
+            .container { flex-direction: column; }
+            .left-panel, .right-panel { width: 100%; padding: 2rem; box-sizing: border-box; }
+            .left-panel { border-right: none; border-bottom: 1px solid #e6ebf1; min-height: 250px;}
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="left-panel">
+        <div class="header">
+            <div class="store-logo">CZ</div>
+            <div class="store-name">Ceylone Zimt</div>
+            <div class="test-mode-badge">TEST MODE</div>
+        </div>
+
+        <div class="amount-section">
+            <div class="amount-label">Pay Ceylone Zimt</div>
+            <div class="amount-value" id="displayAmount">$0.00</div>
+        </div>
+
+        <div class="powered-by">
+            <svg width="34" height="14" viewBox="0 0 34 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M16.634 10.457c0 1.932-1.528 2.502-3.834 2.502-1.785 0-3.483-.49-4.739-1.325v-2.3c1.32.915 2.87 1.365 4.303 1.365 1.096 0 1.636-.367 1.636-1.02 0-.693-.539-1.02-2.193-1.448-2.313-.61-3.95-1.55-3.95-3.468C7.857 2.622 9.57 1.05 12.632 1.05c1.655 0 3.196.47 4.333 1.144v2.261a7.4 7.4 0 0 0-3.99-1.203c-.927 0-1.467.346-1.467.978 0 .612.443.918 2.058 1.346 2.45.653 4.068 1.592 4.068 3.881zm.186-6.52c0-1.78.69-2.914 2.228-2.914 1.137 0 1.884.622 2.228 1.76l1.246-1.036V1.312h2.52v2.853h2.15v2.226h-2.15v4.004c0 .874.34 1.371 1.085 1.371.35 0 .736-.088 1.065-.25v2.226c-.57.25-1.306.398-2.116.398-2.227 0-3.364-1.272-3.364-3.561V6.39h-1.635V4.162h1.635V1.802h2.646v2.36h1.246c-.344 1.138-1.09 1.76-2.228 1.76-1.538 0-2.228-1.133-2.228-2.914l-1.246-1.035zM3.91 1.05C1.848 1.05.34 2.58.34 4.64v8.13h2.643V4.64c0-.505.414-.92 1.036-.92h.023v-2.67H3.91zm28.618 6.435h2.553v5.275h2.573V1.31h-2.573V6.2h-2.553V1.31h-2.573v11.45h2.573V7.485z" fill="#697386"/>
+            </svg>
+        </div>
+    </div>
+
+    <div class="right-panel">
+        <div class="form-title">Payment Details</div>
+        
+        <form id="stripeForm">
+            <div class="fieldset">
+                <label class="field-label">Email</label>
+                <div class="input-group">
+                    <input type="email" class="form-input" placeholder="you@example.com" value="user@example.com" required>
+                </div>
+            </div>
+
+            <div class="fieldset">
+                <label class="field-label">Card Information</label>
+                <div class="input-group">
+                    <input type="text" class="form-input" placeholder="Card number" value="4242 4242 4242 4242" maxlength="19" required>
+                    <div class="row border-top">
+                        <div class="col">
+                            <input type="text" class="form-input" placeholder="MM / YY" value="12 / 26" maxlength="7" required>
+                        </div>
+                        <div class="col border-left">
+                            <input type="text" class="form-input" placeholder="CVC" value="123" maxlength="4" required>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="fieldset">
+                <label class="field-label">Name on card</label>
+                <div class="input-group">
+                    <input type="text" class="form-input" placeholder="John Doe" value="John Doe" required>
+                </div>
+            </div>
+            
+            <div class="fieldset">
+                <label class="field-label">Country or region</label>
+                <div class="input-group">
+                    <select class="form-input" style="color: #30313d; background: transparent; -webkit-appearance: none;">
+                        <option>United States</option>
+                        <option>United Kingdom</option>
+                        <option>Germany</option>
+                        <option>Sri Lanka</option>
+                    </select>
+                </div>
+            </div>
+
+            <button type="submit" class="pay-btn" id="payBtn">
+                <span id="btnText">Pay</span>
+                <div class="spinner" id="spinner"></div>
+            </button>
+            <p style="text-align: center; font-size: 0.8rem; color: #8792a2; margin-top: 1rem;">
+                This is a mock Stripe Checkout portal for demo purposes.
+            </p>
+        </form>
+    </div>
+</div>
+
+<script>
+    // Get parameters
+    const params = new URLSearchParams(window.location.search);
+    const amount = params.get('amount') || '$0.00';
+    const orderNum = params.get('orderNum') || 'TEST-ORDER';
+
+    document.getElementById('displayAmount').textContent = amount;
+    
+    // Format card number dynamically
+    const inputs = document.querySelectorAll('.form-input');
+    inputs.forEach(input => {
+        if(input.placeholder === 'Card number') {
+            input.addEventListener('input', function(e) {
+                let v = e.target.value.replace(/\s+/g, '').replace(/[^0-9]/gi, '');
+                let matches = v.match(/\d{4,16}/g);
+                let match = matches && matches[0] || '';
+                let parts = [];
+                for (let i = 0, len = match.length; i < len; i += 4) {
+                    parts.push(match.substring(i, i + 4));
+                }
+                if (parts.length) {
+                    e.target.value = parts.join(' ');
+                } else {
+                    e.target.value = v;
+                }
+            });
+        }
+        if(input.placeholder === 'MM / YY') {
+            input.addEventListener('input', function(e) {
+                let v = e.target.value.replace(/\s+/g, '').replace(/[^0-9]/gi, '');
+                if (v.length >= 2) {
+                    e.target.value = v.substring(0, 2) + ' / ' + v.substring(2, 4);
+                } else {
+                    e.target.value = v;
+                }
+            });
+        }
+    });
+
+    document.getElementById('stripeForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const btn = document.getElementById('payBtn');
+        const btnText = document.getElementById('btnText');
+        const spinner = document.getElementById('spinner');
+
+        // Show loading state
+        btn.disabled = true;
+        btnText.style.display = 'none';
+        spinner.style.display = 'block';
+
+        // Simulate network request processing
+        setTimeout(() => {
+            // Redirect back to checkout success
+            window.location.href = `checkout.html?success=true&orderNum=${encodeURIComponent(orderNum)}`;
+        }, 1800);
+    });
+</script>
+</body>
+</html>

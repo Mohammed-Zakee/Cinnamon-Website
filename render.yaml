@@ -1,0 +1,17 @@
+services:
+  - type: web
+    name: ceylone-zimt
+    env: node
+    buildCommand: npm install && cd backend && npm install
+    startCommand: cd backend && node src/server.js
+    envVars:
+      - key: PORT
+        value: 5000
+      - key: MONGO_URI
+        sync: false # User will provide this in Render dashboard
+      - key: NODE_ENV
+        value: production
+      - key: JWT_SECRET
+        generateValue: true
+      - key: FRONTEND_URL
+        value: https://ceylone-zimt.onrender.com # Change to actual URL after deploy

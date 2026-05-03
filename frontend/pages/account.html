@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Account | Ceylone Zimt</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="../css/main.css"/>
+</head>
+<body>
+
+
+<nav id="nav">
+  <a href="../index.html" class="logo">Ceylone<span>Zimt</span></a>
+  <ul class="nav-links">
+    <li><a href="../index.html">Home</a></li>
+    <li><a href="shop.html">Shop</a></li>
+  </ul>
+  <div class="nav-actions">
+    <button class="nav-icon" id="cartBtn" title="Cart">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+      <span class="cart-count" id="cartCount">0</span>
+    </button>
+  </div>
+</nav>
+
+<!-- Auth Forms -->
+<div class="auth-page" id="authPage">
+  <div class="auth-box">
+    <!-- Login Form -->
+    <div id="loginSection">
+      <h2>Welcome Back</h2>
+      <p>Sign in to your Ceylone Zimt account</p>
+      <div class="auth-card">
+        <form id="loginForm" onsubmit="handleLogin(event)">
+          <div class="form-group" style="margin-bottom:1rem">
+            <label class="form-label">Email Address</label>
+            <input class="form-input" id="loginEmail" type="email" required placeholder="your@email.com" style="width:100%"/>
+          </div>
+          <div class="form-group" style="margin-bottom:1.5rem">
+            <label class="form-label">Password</label>
+            <input class="form-input" id="loginPassword" type="password" required placeholder="••••••••" style="width:100%"/>
+          </div>
+          <button type="submit" class="btn-primary" style="width:100%" id="loginBtn">Sign In</button>
+        </form>
+      </div>
+      <div class="auth-switch">Don't have an account? <a href="#" onclick="showRegister()">Create one →</a></div>
+    </div>
+
+    <!-- Register Form -->
+    <div id="registerSection" style="display:none">
+      <h2>Create Account</h2>
+      <p>Join the Ceylone Zimt community</p>
+      <div class="auth-card">
+        <form id="registerForm" onsubmit="handleRegister(event)">
+          <div class="form-grid" style="margin-bottom:1rem">
+            <div class="form-group">
+              <label class="form-label">First Name</label>
+              <input class="form-input" id="regFirst" required placeholder="John" style="width:100%"/>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Last Name</label>
+              <input class="form-input" id="regLast" required placeholder="Doe" style="width:100%"/>
+            </div>
+          </div>
+          <div class="form-group" style="margin-bottom:1rem">
+            <label class="form-label">Email Address</label>
+            <input class="form-input" id="regEmail" type="email" required placeholder="your@email.com" style="width:100%"/>
+          </div>
+          <div class="form-group" style="margin-bottom:1.5rem">
+            <label class="form-label">Password (min. 6 characters)</label>
+            <input class="form-input" id="regPassword" type="password" required minlength="6" placeholder="••••••••" style="width:100%"/>
+          </div>
+          <button type="submit" class="btn-primary" style="width:100%" id="regBtn">Create Account</button>
+        </form>
+      </div>
+      <div class="auth-switch">Already have an account? <a href="#" onclick="showLogin()">Sign in →</a></div>
+    </div>
+  </div>
+</div>
+
+<!-- Dashboard (shown when logged in) -->
+<div id="dashboard" style="display:none;padding:7rem 5% 4rem">
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:2.5rem;flex-wrap:wrap;gap:1rem">
+    <div>
+      <h1 style="font-family:'Playfair Display',serif;font-size:2rem;margin-bottom:.3rem">My Account</h1>
+      <p style="color:var(--muted)" id="welcomeMsg"></p>
+    </div>
+    <button class="btn-ghost" onclick="handleLogout()" style="font-size:.82rem">Sign Out</button>
+  </div>
+  <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:1.5rem;margin-bottom:3rem">
+    <div class="stat-card"><div class="stat-card-num" id="orderCount">0</div><div class="stat-card-label">Total Orders</div></div>
+    <div class="stat-card"><div class="stat-card-num gold" id="spentAmount">$0</div><div class="stat-card-label">Total Spent</div></div>
+    <div class="stat-card" onclick="window.location.href='shop.html'" style="cursor:pointer"><div class="stat-card-num">🌿</div><div class="stat-card-label">Shop More Products</div></div>
+  </div>
+
+  <!-- Orders Table -->
+  <h2 style="font-family:'Playfair Display',serif;font-size:1.3rem;margin-bottom:1.5rem">My Orders</h2>
+  <div id="ordersTable">
+    <div style="text-align:center;padding:3rem;color:var(--muted)">
+      <div style="font-size:2rem;margin-bottom:.8rem">📦</div>
+      <p>No orders yet. <a href="shop.html" style="color:var(--gold)">Start shopping →</a></p>
+    </div>
+  </div>
+</div>
+
+<div class="cart-overlay" id="cartOverlay"></div>
+<aside class="cart-sidebar" id="cartSidebar">
+  <div class="cart-header"><h3>🛒 Your Cart</h3><button class="close-btn" id="closeCart">✕</button></div>
+  <div class="cart-items" id="cartItems"></div>
+  <div class="cart-footer" id="cartFooter"></div>
+</aside>
+<div class="toast" id="toast"></div>
+
+<footer>
+  <div class="footer-bottom"><p>© 2025 Ceylone Zimt. All rights reserved.</p></div>
+</footer>
+
+<script src="../js/api.js"></script>
+<script src="../js/cart.js"></script>
+<script src="../js/main.js"></script>
+<script>
+function showRegister() {
+  document.getElementById('loginSection').style.display = 'none';
+  document.getElementById('registerSection').style.display = 'block';
+}
+function showLogin() {
+  document.getElementById('loginSection').style.display = 'block';
+  document.getElementById('registerSection').style.display = 'none';
+}
+
+async function handleLogin(e) {
+  e.preventDefault();
+  const btn = document.getElementById('loginBtn');
+  btn.textContent = 'Signing in...'; btn.disabled = true;
+  try {
+    const data = await API.post('/users/login', {
+      email: document.getElementById('loginEmail').value,
+      password: document.getElementById('loginPassword').value
+    });
+    Auth.login(data.token, data.user);
+    showDashboard();
+    showToast('Welcome back, ' + data.user.firstName + '!', 'success');
+  } catch (err) {
+    showToast(err.message, 'error');
+    btn.textContent = 'Sign In'; btn.disabled = false;
+  }
+}
+
+async function handleRegister(e) {
+  e.preventDefault();
+  const btn = document.getElementById('regBtn');
+  btn.textContent = 'Creating...'; btn.disabled = true;
+  try {
+    const data = await API.post('/users/register', {
+      firstName: document.getElementById('regFirst').value,
+      lastName: document.getElementById('regLast').value,
+      email: document.getElementById('regEmail').value,
+      password: document.getElementById('regPassword').value
+    });
+    Auth.login(data.token, data.user);
+    showDashboard();
+    showToast('Account created! Welcome to Ceylone Zimt 🌿', 'success');
+  } catch (err) {
+    showToast(err.message, 'error');
+    btn.textContent = 'Create Account'; btn.disabled = false;
+  }
+}
+
+function handleLogout() {
+  Auth.logout();
+  document.getElementById('dashboard').style.display = 'none';
+  document.getElementById('authPage').style.display = 'flex';
+}
+
+async function showDashboard() {
+  document.getElementById('authPage').style.display = 'none';
+  document.getElementById('dashboard').style.display = 'block';
+  const user = Auth.user;
+  document.getElementById('welcomeMsg').textContent = `${user.email} · Member since ${new Date(user.createdAt || Date.now()).getFullYear()}`;
+  document.getElementById('orderCount').textContent = user.totalOrders || 0;
+  document.getElementById('spentAmount').textContent = '$' + (user.totalSpent || 0).toFixed(2);
+
+  // Try to load orders
+  try {
+    const data = await API.get('/orders/my');
+    if (data.success && data.orders.length > 0) {
+      document.getElementById('ordersTable').innerHTML = `
+        <table class="data-table">
+          <thead><tr><th>Order #</th><th>Date</th><th>Status</th><th>Total</th></tr></thead>
+          <tbody>${data.orders.map(o => `
+            <tr>
+              <td style="color:var(--gold)">${o.orderNumber}</td>
+              <td>${new Date(o.createdAt).toLocaleDateString()}</td>
+              <td><span class="status-badge status-${o.status}">${o.status}</span></td>
+              <td>$${o.total.toFixed(2)}</td>
+            </tr>
+          `).join('')}</tbody>
+        </table>`;
+    }
+  } catch {}
+}
+
+// Check if already logged in
+if (Auth.isLoggedIn()) showDashboard();
+</script>
+</body>
+</html>

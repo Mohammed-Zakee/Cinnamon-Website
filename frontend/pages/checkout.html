@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Secure Checkout | Ceylone Zimt</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="../css/main.css"/>
+<style>
+  body { background: #fff; color: var(--text); padding-top: 0; }
+  .checkout-container { display: grid; grid-template-columns: 1fr 450px; min-height: 100vh; }
+  .checkout-main { padding: 4rem 10%; background: #fff; overflow-y: auto; }
+  .checkout-sidebar { padding: 4rem 3rem; background: var(--dark); border-left: 1px solid var(--border); overflow-y: auto; }
+  
+  .back-link { display: flex; align-items: center; gap: .5rem; color: var(--text-muted); text-decoration: none; font-size: .8rem; margin-bottom: 3rem; text-transform: uppercase; letter-spacing: 0.1em; }
+  .back-link:hover { color: var(--black); }
+  
+  h2 { font-family: 'Playfair Display', serif; font-size: 2.5rem; margin-bottom: 2rem; letter-spacing: -0.02em; }
+  
+  .payment-form { max-width: 500px; }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+  
+  .pay-btn { 
+    width: 100%; padding: 1.4rem; background: var(--black); color: var(--white); border: none; border-radius: 8px; 
+    font-weight: 600; font-size: 1rem; cursor: pointer; transition: var(--transition);
+    margin-top: 2rem; text-transform: uppercase; letter-spacing: 0.15em;
+  }
+  .pay-btn:hover:not(:disabled) { background: var(--gold); transform: translateY(-3px); }
+  .pay-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+  
+  .summary-item { display: flex; justify-content: space-between; margin-bottom: 1rem; font-size: .9rem; color: var(--text-muted); }
+  .summary-total { display: flex; justify-content: space-between; margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid var(--border); font-weight: 700; font-size: 1.4rem; font-family: 'Playfair Display', serif; }
+  
+  .cart-item-small { display: flex; align-items: center; gap: 1.5rem; margin-bottom: 1.5rem; }
+  .cart-item-small img { width: 70px; height: 70px; object-fit: cover; border-radius: 12px; background: #fff; border: 1px solid var(--border); }
+  .cart-item-info h4 { font-size: .95rem; margin-bottom: .2rem; font-weight: 600; }
+  .cart-item-info p { font-size: .8rem; color: var(--text-muted); }
+  
+  .secure-badge { display: flex; align-items: center; gap: .8rem; font-size: .8rem; color: var(--text-muted); justify-content: center; margin-top: 3rem; opacity: 0.7; }
+  
+  .success-overlay {
+    position: fixed; inset: 0; background: #fff; z-index: 5000;
+    display: none; flex-direction: column; align-items: center; justify-content: center; text-align: center;
+    padding: 2rem; animation: fadeIn 0.5s ease;
+  }
+  .success-icon { width: 80px; height: 80px; background: var(--success); color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 2.5rem; margin-bottom: 2rem; }
+  
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+  
+  @media (max-width: 1100px) {
+    .checkout-container { grid-template-columns: 1fr; }
+    .checkout-sidebar { order: -1; padding: 3rem 10%; border-left: none; border-bottom: 1px solid var(--border); }
+    .checkout-main { padding: 3rem 10%; }
+  }
+</style>
+</head>
+<body>
+
+<div class="checkout-container">
+  <main class="checkout-main">
+    <a href="shop.html" class="back-link">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+      Back to collection
+    </a>
+    
+    <div class="checkout-steps">
+      <div class="step active">01 Information</div>
+      <div class="step">02 Shipping</div>
+      <div class="step">03 Payment</div>
+    </div>
+
+    <div class="payment-form">
+      <h2>Shipping & Payment</h2>
+      <form id="paymentForm" novalidate>
+        <div class="form-group">
+          <label class="error-msg">Please enter a valid email</label>
+          <input type="email" id="email" class="form-input" placeholder="Email Address" required>
+        </div>
+        
+        <div class="form-row">
+          <div class="form-group">
+            <input type="text" id="firstName" class="form-input" placeholder="First Name" required>
+          </div>
+          <div class="form-group">
+            <input type="text" id="lastName" class="form-input" placeholder="Last Name" required>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <input type="text" id="address" class="form-input" placeholder="Shipping Address" required>
+        </div>
+
+        <div style="margin-top: 3rem; margin-bottom: 1.5rem; font-weight: 600; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted);">Card Information</div>
+
+        <div class="form-group">
+          <label class="error-msg" id="cardError">Invalid card number</label>
+          <div style="position: relative;">
+            <input type="text" id="cardNumber" class="form-input" placeholder="0000 0000 0000 0000" maxlength="19" required>
+            <div id="cardTypeIcon" style="position: absolute; right: 1rem; top: 50%; transform: translateY(-50%); font-size: 1.2rem;"></div>
+          </div>
+        </div>
+        
+        <div class="form-row">
+          <div class="form-group">
+            <label class="error-msg">Invalid Date</label>
+            <input type="text" id="cardExpiry" class="form-input" placeholder="MM / YY" maxlength="5" required>
+          </div>
+          <div class="form-group">
+            <label class="error-msg">Invalid CVC</label>
+            <input type="text" id="cardCvc" class="form-input" placeholder="CVC" maxlength="4" required>
+          </div>
+        </div>
+        
+        <button type="submit" class="pay-btn" id="payBtn">Complete Order</button>
+      </form>
+      
+      <div class="secure-badge">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+        Your payment is secure and encrypted.
+      </div>
+    </div>
+  </main>
+  
+  <aside class="checkout-sidebar">
+    <h3 style="margin-bottom: 2rem; font-family: 'Playfair Display', serif;">Order Summary</h3>
+    <div id="orderItems">
+      <!-- Items will be injected here -->
+    </div>
+    
+    <div style="margin-top: 2rem;">
+      <div class="summary-item"><span>Subtotal</span><span id="subtotal">$0.00</span></div>
+      <div class="summary-item"><span>Shipping</span><span id="shipping">$0.00</span></div>
+      <div class="summary-total">
+        <span>Total</span>
+        <span id="checkoutTotal">$0.00</span>
+      </div>
+    </div>
+  </aside>
+</div>
+
+<div class="success-overlay" id="successOverlay">
+  <div class="success-icon">✓</div>
+  <h2 style="font-size: 3rem;">Thank You!</h2>
+  <p style="color: var(--text-muted); max-width: 400px; margin-bottom: 3rem;">Your order has been placed successfully. We've sent a confirmation email to <strong id="confEmail"></strong>.</p>
+  <a href="../index.html" class="btn-primary" style="background: var(--black); color: #fff;">Back to Home</a>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="../js/api.js"></script>
+<script src="../js/cart.js"></script>
+<script>
+  // Validation Logic
+  const validators = {
+    email: (val) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val),
+    cardNumber: (val) => {
+      const n = val.replace(/\s+/g, '');
+      if (n.length < 13 || n.length > 19) return false;
+      // Luhn Algorithm
+      let sum = 0;
+      for (let i = 0; i < n.length; i++) {
+        let intVal = parseInt(n[n.length - 1 - i]);
+        if (i % 2 === 1) {
+          intVal *= 2;
+          if (intVal > 9) intVal -= 9;
+        }
+        sum += intVal;
+      }
+      return sum % 10 === 0;
+    },
+    expiry: (val) => {
+      if (!/^\d{2}\/\d{2}$/.test(val)) return false;
+      const [m, y] = val.split('/').map(n => parseInt(n));
+      if (m < 1 || m > 12) return false;
+      const now = new Date();
+      const currentYear = now.getFullYear() % 100;
+      const currentMonth = now.getMonth() + 1;
+      return y > currentYear || (y === currentYear && m >= currentMonth);
+    },
+    cvc: (val) => /^\d{3,4}$/.test(val)
+  };
+
+  document.addEventListener('DOMContentLoaded', () => {
+    const items = Cart.getItems();
+    if (items.length === 0) { window.location.href = 'shop.html'; return; }
+    
+    // Render Summary
+    const orderItemsContainer = document.getElementById('orderItems');
+    let subtotal = 0;
+    orderItemsContainer.innerHTML = items.map(item => {
+      subtotal += item.price * (item.qty || 1);
+      return `
+        <div class="cart-item-small">
+          <img src="${item.imageUrl || '../assets/images/hero_cinnamon.png'}" alt="${item.name}">
+          <div class="cart-item-info">
+            <h4>${item.name}</h4>
+            <p>Qty: ${item.qty || 1} × $${item.price.toFixed(2)}</p>
+          </div>
+          <div style="margin-left:auto; font-weight:600;">$${(item.price * (item.qty || 1)).toFixed(2)}</div>
+        </div>
+      `;
+    }).join('');
+    
+    const shipping = subtotal >= 50 ? 0 : 8.99;
+    const total = subtotal + shipping;
+    
+    document.getElementById('subtotal').textContent = `$${subtotal.toFixed(2)}`;
+    document.getElementById('shipping').textContent = shipping === 0 ? 'FREE' : `$${shipping.toFixed(2)}`;
+    document.getElementById('checkoutTotal').textContent = `$${total.toFixed(2)}`;
+    document.getElementById('payBtn').textContent = `Pay $${total.toFixed(2)}`;
+    
+    // Input Masking & Card Type Detection
+    const cardInput = document.getElementById('cardNumber');
+    const cardTypeIcon = document.getElementById('cardTypeIcon');
+    
+    cardInput.addEventListener('input', (e) => {
+      let val = e.target.value.replace(/\D/g, '');
+      e.target.value = val.replace(/(.{4})/g, '$1 ').trim();
+      
+      // Card Type Detection
+      if (val.startsWith('4')) cardTypeIcon.textContent = '💳 Visa';
+      else if (val.startsWith('5')) cardTypeIcon.textContent = '💳 MC';
+      else if (val.startsWith('3')) cardTypeIcon.textContent = '💳 Amex';
+      else cardTypeIcon.textContent = '';
+      
+      validateField(cardInput, validators.cardNumber);
+    });
+
+    document.getElementById('cardExpiry').addEventListener('input', (e) => {
+      let val = e.target.value.replace(/\D/g, '');
+      if (val.length >= 2) val = val.slice(0, 2) + ' / ' + val.slice(2);
+      e.target.value = val.slice(0, 7);
+      validateField(e.target, validators.expiry);
+    });
+
+    document.getElementById('cardCvc').addEventListener('input', (e) => {
+      e.target.value = e.target.value.replace(/\D/g, '').slice(0, 4);
+      validateField(e.target, validators.cvc);
+    });
+
+    document.getElementById('email').addEventListener('blur', (e) => validateField(e.target, validators.email));
+
+    function validateField(input, validator) {
+      const isValid = validator(input.value.trim());
+      if (isValid || input.value === '') {
+        input.classList.remove('invalid');
+      } else {
+        input.classList.add('invalid');
+      }
+      return isValid;
+    }
+
+    // Form Submission
+    const form = document.getElementById('paymentForm');
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      
+      const isEmailValid = validateField(document.getElementById('email'), validators.email);
+      const isCardValid = validateField(document.getElementById('cardNumber'), validators.cardNumber);
+      const isExpiryValid = validateField(document.getElementById('cardExpiry'), validators.expiry);
+      const isCvcValid = validateField(document.getElementById('cardCvc'), validators.cvc);
+      
+      if (!isEmailValid || !isCardValid || !isExpiryValid || !isCvcValid) {
+        showToast('Please fix the errors in the form', 'error');
+        return;
+      }
+
+      const payBtn = document.getElementById('payBtn');
+      payBtn.disabled = true;
+      payBtn.textContent = 'Processing Payment...';
+      
+      // Simulate API call with high fidelity
+      setTimeout(() => {
+        const email = document.getElementById('email').value;
+        document.getElementById('confEmail').textContent = email;
+        document.getElementById('successOverlay').style.display = 'flex';
+        Cart.clear();
+      }, 2500);
+    });
+  });
+</script>
+
+</body>
+</html>
