@@ -34,6 +34,7 @@ nav {
   display: flex; align-items: center; justify-content: space-between;
   padding: 2rem 5%;
   transition: var(--transition);
+  background: transparent;
 }
 nav.scrolled {
   padding: 1rem 5%;
@@ -41,48 +42,44 @@ nav.scrolled {
   border-bottom: 1px solid var(--border);
   backdrop-filter: blur(10px);
 }
+
+/* Default (Light Theme / Scrolled) */
 .logo {
   font-family: 'Playfair Display', serif;
   font-size: 1.8rem; font-weight: 700;
-  color: var(--white); text-decoration: none;
+  color: var(--black); text-decoration: none;
   letter-spacing: -0.02em;
 }
 .logo span { color: var(--gold2); font-weight: 400; }
 
-nav.scrolled .logo {
-  color: var(--black);
-}
-
 .nav-links { display: flex; gap: 3rem; list-style: none; }
 .nav-links a {
-  color: rgba(255,255,255,0.8); text-decoration: none;
+  color: var(--text); text-decoration: none;
   font-size: 0.75rem; letter-spacing: 0.15em;
   text-transform: uppercase; font-weight: 500;
   transition: var(--transition);
 }
 .nav-links a:hover { color: var(--gold2); }
-.nav-links a.active { color: var(--white); border-bottom: 1px solid var(--white); }
+.nav-links a.active { color: var(--gold); border-bottom: 1px solid var(--gold); }
 
-nav.scrolled .nav-links a {
-  color: var(--text);
-}
-nav.scrolled .nav-links a.active {
-  color: var(--gold); border-bottom-color: var(--gold);
-}
-
-.nav-actions { display: flex; align-items: center; gap: 2rem; color: var(--white); }
-nav.scrolled .nav-actions { color: var(--text); }
-
+.nav-actions { display: flex; align-items: center; gap: 2rem; color: var(--text); }
 .nav-icon { background: none; border: none; cursor: pointer; position: relative; color: inherit; display: flex; align-items: center; }
 .nav-btn {
-  background: var(--gold2); color: #fff; border: none;
+  background: var(--black); color: #fff; border: none;
   padding: 0.6rem 1.5rem; font-size: 0.7rem; font-weight: 600;
   text-transform: uppercase; letter-spacing: 0.1em; cursor: pointer;
   transition: var(--transition); border-radius: 4px;
 }
-.nav-btn:hover { background: var(--white); color: var(--black); }
-nav.scrolled .nav-btn { background: var(--black); }
-nav.scrolled .nav-btn:hover { background: var(--gold); color: #fff; }
+.nav-btn:hover { background: var(--gold); color: #fff; }
+
+/* Transparent / Dark Background Theme */
+nav.nav-transparent:not(.scrolled) { color: var(--white); }
+nav.nav-transparent:not(.scrolled) .logo { color: var(--white); }
+nav.nav-transparent:not(.scrolled) .nav-links a { color: rgba(255,255,255,0.8); }
+nav.nav-transparent:not(.scrolled) .nav-links a.active { color: var(--white); border-bottom-color: var(--white); }
+nav.nav-transparent:not(.scrolled) .nav-actions { color: var(--white); }
+nav.nav-transparent:not(.scrolled) .nav-btn { background: var(--gold2); }
+nav.nav-transparent:not(.scrolled) .nav-btn:hover { background: var(--white); color: var(--black); }
 .cart-count {
   position: absolute; top: -8px; right: -8px;
   background: var(--gold); color: #fff;
