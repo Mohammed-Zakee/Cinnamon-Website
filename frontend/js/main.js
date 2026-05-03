@@ -12,6 +12,19 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  // ─── Mobile Menu ────────────────────────────────────────
+  const menuToggle = document.getElementById('menuToggle');
+  const navLinksContainer = document.querySelector('.nav-links');
+  if (menuToggle && navLinksContainer) {
+    menuToggle.addEventListener('click', () => {
+      navLinksContainer.classList.toggle('open');
+    });
+    // Close menu when clicking a link
+    navLinksContainer.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => navLinksContainer.classList.remove('open'));
+    });
+  }
+
   // ─── Scroll Reveal ──────────────────────────────────────
   window.revealObserver = new IntersectionObserver(entries => {
     entries.forEach(e => {
