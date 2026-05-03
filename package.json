@@ -1,0 +1,11 @@
+{
+  "name": "ceylone-zimt",
+  "version": "1.0.0",
+  "description": "Premium Ceylon Cinnamon E-Commerce",
+  "private": true,
+  "scripts": {
+    "start": "cd backend && node src/server.js",
+    "install-all": "npm install && cd backend && npm install",
+    "dev": "cd backend && npm run dev"
+  }
+}

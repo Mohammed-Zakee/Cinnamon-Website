@@ -4,17 +4,12 @@ FROM node:18-alpine
 # Set working directory
 WORKDIR /app
 
-# Copy root package files
-COPY package*.json ./
-RUN npm install --production
+# Copy everything
+COPY . .
 
-# Copy frontend
-COPY frontend ./frontend
-
-# Copy backend
-COPY backend ./backend
+# Install backend dependencies
 WORKDIR /app/backend
-RUN npm install --production
+RUN npm install --omit=dev
 
 # Expose port
 EXPOSE 5000
