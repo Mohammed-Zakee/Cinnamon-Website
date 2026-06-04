@@ -164,3 +164,57 @@ document.addEventListener('DOMContentLoaded', async () => {
     // Fail silently
   }
 });
+
+// ─── Dynamic Header Linking & Screen Reader Accessibility ───
+document.addEventListener('DOMContentLoaded', () => {
+  const navLinks = document.querySelector('.nav-links');
+  if (navLinks) {
+    const isRoot = !window.location.pathname.includes('/pages/');
+    const accountUrl = isRoot ? 'pages/account.html' : 'account.html';
+    
+    const accountLi = document.createElement('li');
+    accountLi.className = 'nav-account-item';
+    
+    // Check if user is logged in
+    const isLoggedIn = typeof Auth !== 'undefined' && Auth.isLoggedIn();
+    const user = isLoggedIn ? Auth.user : null;
+    
+    accountLi.innerHTML = isLoggedIn 
+      ? `<a href="${accountUrl}" class="nav-account-btn" style="color: var(--gold); font-weight: 600;">👤 ${user.firstName || 'Account'}</a>`
+      : `<a href="${accountUrl}" class="nav-account-btn" style="border: 1px solid var(--border); padding: 0.4rem 0.8rem; border-radius: 6px; font-size: 0.72rem; letter-spacing: 0.05em; display: inline-flex; align-items: center; gap: 0.3rem;">🔑 Login</a>`;
+      
+    // Prepend to links (first item, i.e. on the left-hand side of links)
+    navLinks.insertBefore(accountLi, navLinks.firstChild);
+  }
+
+  // Inject ARIA accessibility tags for Screen Readers
+  document.querySelectorAll('#cartBtn').forEach(btn => {
+    if (!btn.getAttribute('aria-label')) btn.setAttribute('aria-label', 'Open shopping cart');
+    btn.setAttribute('role', 'button');
+  });
+  
+  document.querySelectorAll('#closeCart').forEach(btn => {
+    if (!btn.getAttribute('aria-label')) btn.setAttribute('aria-label', 'Close shopping cart');
+    btn.setAttribute('role', 'button');
+  });
+  
+  document.querySelectorAll('.menu-toggle').forEach(btn => {
+    if (!btn.getAttribute('aria-label')) btn.setAttribute('aria-label', 'Toggle main menu');
+    btn.setAttribute('role', 'button');
+  });
+
+  // Ensure form inputs have correct label-matching for screen readers
+  document.querySelectorAll('.form-group').forEach(grp => {
+    const label = grp.querySelector('label');
+    const input = grp.querySelector('input, textarea, select');
+    if (label && input) {
+      let id = input.getAttribute('id');
+      if (!id) {
+        id = 'input_' + Math.random().toString(36).substr(2, 9);
+        input.setAttribute('id', id);
+      }
+      label.setAttribute('for', id);
+    }
+  });
+});
+
