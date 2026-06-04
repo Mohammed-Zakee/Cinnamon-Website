@@ -126,7 +126,6 @@ const Cart = {
   },
 
   close() {
-    document.getElementById('cartSidebar')?.classList.remove('remove-btn'); // Error fix: class remove wrong
     document.getElementById('cartSidebar')?.classList.remove('open');
     document.getElementById('cartOverlay')?.classList.remove('open');
     document.body.style.overflow = '';

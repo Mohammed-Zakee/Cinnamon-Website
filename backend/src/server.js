@@ -13,6 +13,7 @@ const newsletterRoutes = require('./routes/newsletter');
 const contactRoutes = require('./routes/contact');
 const uploadRoutes = require('./routes/upload');
 const settingsRoutes = require('./routes/settings');
+const generateImageRoutes = require('./routes/generateImage');
 
 const app = express();
 
@@ -47,13 +48,14 @@ app.use(express.static(FRONTEND_DIR));
 app.use('/uploads', express.static(UPLOADS_DIR));
 
 // ─── API Routes ───────────────────────────────────────────────────────────────
-app.use('/api/products',   productRoutes);
-app.use('/api/orders',     orderRoutes);
-app.use('/api/users',      userRoutes);
-app.use('/api/newsletter', newsletterRoutes);
-app.use('/api/contact',    contactRoutes);
-app.use('/api/upload',     uploadRoutes);
-app.use('/api/settings',   settingsRoutes);
+app.use('/api/products',        productRoutes);
+app.use('/api/orders',          orderRoutes);
+app.use('/api/users',           userRoutes);
+app.use('/api/newsletter',      newsletterRoutes);
+app.use('/api/contact',         contactRoutes);
+app.use('/api/upload',          uploadRoutes);
+app.use('/api/settings',        settingsRoutes);
+app.use('/api/generate-image',  generateImageRoutes);
 
 // ─── Health Check ─────────────────────────────────────────────────────────────
 app.get('/api/health', (req, res) => {

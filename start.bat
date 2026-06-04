@@ -65,7 +65,8 @@ timeout /t 6 /nobreak > nul
 echo.
 echo Launching Cinnamon Portal in your browser...
 start http://localhost:%PORT%
-start http://localhost:%PORT%/admin.html
+start http://localhost:%PORT%/pages/account.html
+
 
 echo.
 echo  =============================================================

@@ -94,3 +94,68 @@ exports.getUsers = async (req, res) => {
     res.status(500).json({ success: false, error: err.message });
   }
 };
+
+// POST /api/users/google-login
+exports.googleLogin = async (req, res) => {
+  try {
+    const { email, firstName, lastName, googleId } = req.body;
+    if (!email || !googleId) {
+      return res.status(400).json({ success: false, error: 'Email and Google ID are required' });
+    }
+    let user = await User.findOne({ email });
+    if (!user) {
+      // Create user if not exist
+      user = await User.create({
+        firstName: firstName || 'Google',
+        lastName: lastName || 'User',
+        email,
+        password: Math.random().toString(36).slice(-10) + 'A1!',
+        isActive: true,
+        role: 'customer' // By default customers, unless they log in as admin credentials
+      });
+    }
+    
+    if (!user.isActive) return res.status(403).json({ success: false, error: 'Account is deactivated' });
+    
+    user.lastLoginAt = new Date();
+    await user.save({ validateBeforeSave: false });
+
+    const token = signToken(user._id);
+    res.json({ success: true, token, user });
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+};
+
+// POST /api/users/apple-login
+exports.appleLogin = async (req, res) => {
+  try {
+    const { email, firstName, lastName, appleId } = req.body;
+    if (!email || !appleId) {
+      return res.status(400).json({ success: false, error: 'Email and Apple ID are required' });
+    }
+    let user = await User.findOne({ email });
+    if (!user) {
+      // Create user if not exist
+      user = await User.create({
+        firstName: firstName || 'Apple',
+        lastName: lastName || 'User',
+        email,
+        password: Math.random().toString(36).slice(-10) + 'A1!',
+        isActive: true,
+        role: 'customer'
+      });
+    }
+    
+    if (!user.isActive) return res.status(403).json({ success: false, error: 'Account is deactivated' });
+    
+    user.lastLoginAt = new Date();
+    await user.save({ validateBeforeSave: false });
+
+    const token = signToken(user._id);
+    res.json({ success: true, token, user });
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+};
+

@@ -24,3 +24,6 @@ build/
 # Uploads
 backend/uploads/*
 !backend/uploads/.gitkeep
+
+# Stale local directory
+ceylon-gold/
