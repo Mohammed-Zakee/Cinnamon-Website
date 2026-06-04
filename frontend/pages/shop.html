@@ -7,23 +7,30 @@
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"/>
 <link rel="stylesheet" href="../css/main.css"/>
 <style>
-  .shop-container { display: grid; grid-template-columns: 280px 1fr; gap: 4rem; padding: 10rem 5%; max-width: 1600px; margin: 0 auto; }
-  .filter-group { margin-bottom: 3.5rem; }
-  .filter-title { font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.2em; margin-bottom: 1.5rem; color: var(--gold); }
+  .shop-container { display: grid; grid-template-columns: 260px 1fr; gap: 4rem; padding: 10rem 5%; max-width: 1600px; margin: 0 auto; }
+  .filter-group { margin-bottom: 3rem; }
+  .filter-title { font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.2em; margin-bottom: 1.2rem; color: var(--gold); }
   .filter-list { list-style: none; }
-  .filter-list li { margin-bottom: 1rem; font-size: 0.9rem; cursor: pointer; color: var(--text-muted); transition: var(--transition); display: flex; align-items: center; gap: 0.5rem; }
-  .filter-list li::before { content: '○'; font-size: 0.6rem; opacity: 0.3; }
-  .filter-list li:hover { color: var(--black); padding-left: 5px; }
-  .filter-list li.active { color: var(--black); font-weight: 600; padding-left: 5px; }
+  .filter-list li { margin-bottom: 0.9rem; font-size: 0.88rem; cursor: pointer; color: var(--text-muted); transition: var(--transition); display: flex; align-items: center; gap: 0.5rem; }
+  .filter-list li::before { content: '○'; font-size: 0.6rem; opacity: 0.4; }
+  .filter-list li:hover { color: var(--text); padding-left: 5px; }
+  .filter-list li.active { color: var(--gold); font-weight: 600; padding-left: 5px; }
   .filter-list li.active::before { content: '●'; opacity: 1; color: var(--gold); }
   
-  .search-input { width: 100%; padding: 1rem; border: 1px solid var(--border); border-radius: 8px; font-size: 0.9rem; transition: var(--transition); background: var(--dark); }
-  .search-input:focus { outline: none; border-color: var(--black); background: #fff; }
+  .shop-search-input { width: 100%; padding: 0.9rem 1rem; border: 1px solid var(--border-dim); border-radius: 8px; font-size: 0.88rem; transition: var(--transition); background: var(--dark2); color: var(--text); outline: none; }
+  .shop-search-input:focus { border-color: var(--gold); box-shadow: 0 0 0 3px rgba(212,130,10,0.1); }
+  .shop-search-input::placeholder { color: var(--text-muted); }
+
+  .shop-header { padding: 10rem 5% 3rem; text-align: center; background: radial-gradient(ellipse at top, rgba(212,130,10,0.08), transparent 60%); }
 
   @media (max-width: 1000px) {
-    .shop-container { grid-template-columns: 1fr; padding-top: 8rem; }
+    .shop-container { grid-template-columns: 1fr; padding-top: 4rem; }
     .shop-sidebar { display: flex; flex-wrap: wrap; gap: 2rem; }
-    .filter-group { margin-bottom: 0; flex: 1; min-width: 200px; }
+    .filter-group { margin-bottom: 0; flex: 1; min-width: 180px; }
+  }
+  @media (max-width: 600px) {
+    .shop-container { padding-top: 2rem; }
+    .shop-header { padding-top: 8rem; }
   }
 </style>
 </head>
@@ -48,16 +55,16 @@
   </div>
 </nav>
 
-<header style="padding: 10rem 5% 0; text-align: center;">
-  <h1 style="font-family: 'Playfair Display', serif; font-size: 4rem; letter-spacing: -0.02em;">Our Collection</h1>
+<div class="shop-header">
+  <h1 style="font-family: 'Playfair Display', serif; font-size: clamp(2.5rem,6vw,4rem); letter-spacing: -0.02em; color: var(--text);">Our Collection</h1>
   <p style="color: var(--text-muted); max-width: 600px; margin: 1rem auto 0;">Explore the finest varieties of Ceylon cinnamon, from delicate Alba quills to potent bark oils.</p>
-</header>
+</div>
 
 <div class="shop-container">
   <aside class="shop-sidebar reveal">
     <div class="filter-group">
       <div class="filter-title">Search</div>
-      <input type="text" id="shopSearch" class="search-input" placeholder="Search spices..." oninput="applyFilters()">
+      <input type="text" id="shopSearch" class="shop-search-input" placeholder="Search spices..." oninput="applyFilters()">
     </div>
     <div class="filter-group">
       <div class="filter-title">Categories</div>

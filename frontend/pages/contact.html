@@ -35,7 +35,39 @@
   </div>
 </section>
 
-<div style="display:grid;grid-template-columns:1fr 1fr;gap:4rem;padding:5rem 5%;max-width:1200px;margin:0 auto">
+<style>
+  .contact-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    padding: 5rem 5%;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  .testimonial {
+    background: var(--dark2);
+    border: 1px solid var(--border-dim);
+    border-radius: 12px;
+    padding: 1.5rem;
+    transition: border-color 0.3s ease;
+  }
+  .testimonial:hover { border-color: var(--border); }
+  .form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+  }
+  .form-grid .full-width { grid-column: 1 / -1; }
+  @media (max-width: 900px) {
+    .contact-grid { grid-template-columns: 1fr; gap: 3rem; }
+    .form-grid { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 600px) {
+    .contact-grid { padding: 4rem 5%; }
+  }
+</style>
+
+<div class="contact-grid">
   <!-- Contact Form -->
   <div class="reveal">
     <h2 style="font-family:'Playfair Display',serif;font-size:1.8rem;margin-bottom:.5rem">Send a Message</h2>

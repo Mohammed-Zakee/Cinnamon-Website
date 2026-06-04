@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const Settings = require('../models/Settings');
+const { protect, restrictTo } = require('../middleware/auth');
 
 router.get('/', async (req, res) => {
   try {
@@ -12,7 +13,7 @@ router.get('/', async (req, res) => {
   }
 });
 
-router.put('/', async (req, res) => {
+router.put('/', protect, restrictTo('admin'), async (req, res) => {
   try {
     let settings = await Settings.findOne();
     if (!settings) settings = new Settings();

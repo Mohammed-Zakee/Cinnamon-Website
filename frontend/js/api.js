@@ -14,6 +14,25 @@ const STATIC_PRODUCTS = [
   { _id: 'quillings', name: 'Cinnamon Quillings', slug: 'cinnamon-quillings', grade: 'Quillings', category: 'pieces', description: "Small, curled off-cuts from premium quill production — intensely flavored and perfect for infusions, teas, and cooking.", price: 14.00, unit: '100g', emoji: '🪵', imageUrl: '/assets/images/cinnamon_powder.png', colorFrom: '#B06020', colorTo: '#5A2A08', rating: 4.5 }
 ];
 
+const Auth = {
+  get token() { return localStorage.getItem('cg_token'); },
+  get user() {
+    const u = localStorage.getItem('cg_user');
+    return u ? JSON.parse(u) : null;
+  },
+  login(token, user) {
+    localStorage.setItem('cg_token', token);
+    localStorage.setItem('cg_user', JSON.stringify(user));
+  },
+  logout() {
+    localStorage.removeItem('cg_token');
+    localStorage.removeItem('cg_user');
+  },
+  isLoggedIn() {
+    return !!localStorage.getItem('cg_token');
+  }
+};
+
 const API = {
   async request(method, endpoint, body = null) {
     const token = localStorage.getItem('cg_token');

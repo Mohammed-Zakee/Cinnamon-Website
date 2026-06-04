@@ -82,17 +82,19 @@ document.addEventListener('DOMContentLoaded', () => {
     const langSelector = document.createElement('div');
     langSelector.className = 'lang-selector';
     langSelector.innerHTML = `
-      <select id="currencySelector" onchange="window.setCurrency(this.value)" style="margin-right:8px; border:none; background:none; font-size:0.7rem; cursor:pointer; color:inherit;">
-        <option value="USD">USD ($)</option>
-        <option value="EUR">EUR (€)</option>
-        <option value="PLN">PLN (zł)</option>
-        <option value="LKR">LKR (Rs)</option>
+      <select id="currencySelector" onchange="window.setCurrency(this.value)"
+        style="background:#1C1000;color:#F5E8D0;border:1px solid rgba(212,130,10,0.3);border-radius:6px;padding:4px 20px 4px 8px;font-size:0.72rem;cursor:pointer;outline:none;">
+        <option value="USD" style="background:#1C1000;color:#F5E8D0;">USD ($)</option>
+        <option value="EUR" style="background:#1C1000;color:#F5E8D0;">EUR (€)</option>
+        <option value="PLN" style="background:#1C1000;color:#F5E8D0;">PLN (zł)</option>
+        <option value="LKR" style="background:#1C1000;color:#F5E8D0;">LKR (Rs)</option>
       </select>
-      <select id="googleLangSelector" onchange="doGTranslate(this.value)" style="border:none; background:none; font-size:0.7rem; cursor:pointer; color:inherit;">
-        <option value="en">EN</option>
-        <option value="de">DE</option>
-        <option value="pl">PL</option>
-        <option value="si">සිං</option>
+      <select id="googleLangSelector" onchange="doGTranslate(this.value)"
+        style="background:#1C1000;color:#F5E8D0;border:1px solid rgba(212,130,10,0.3);border-radius:6px;padding:4px 20px 4px 8px;font-size:0.72rem;cursor:pointer;outline:none;">
+        <option value="en" style="background:#1C1000;color:#F5E8D0;">EN</option>
+        <option value="de" style="background:#1C1000;color:#F5E8D0;">DE</option>
+        <option value="pl" style="background:#1C1000;color:#F5E8D0;">PL</option>
+        <option value="si" style="background:#1C1000;color:#F5E8D0;">සිං</option>
       </select>
       <div id="google_translate_element" style="display:none;"></div>
     `;
