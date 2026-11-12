@@ -27,3 +27,10 @@ backend/uploads/*
 
 # Stale local directory
 ceylon-gold/
+
+# Local deployment package
+ceylone-zimt-deploy.tar.gz
+
+# Separate Sites checkout; production Vercel source lives in frontend/
+published-store/
+.vercel/

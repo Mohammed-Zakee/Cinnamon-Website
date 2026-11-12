@@ -1,4 +1,16 @@
-# Ceylone Zimt 🌿✨
+# Ceylone Zimt — redesigned storefront
+
+The current storefront is in `frontend/` and the Vercel deployment is configured at the repository root. It uses the supplied product photos, a new cinnamon-and-leaf logo, generated editorial hero photography, built-in English/Sinhala/Tamil/German translations and LKR/EUR/USD/PLN display options.
+
+**Current ordering:** customers prepare an itemised email enquiry addressed to mohammedzakee2006@gmail.com, then send it using their own email app. No payment is collected and no order is automatically submitted. Seller prices: powder 100 g €7.90; sticks 100 g €8.90; oil 100 mL €13.90; oil 10 mL LKR 1,390. Other currency views use fixed reference conversions. Shipping and taxes are confirmed by email.
+
+**Payments are not live.** The previous insecure Stripe session endpoint is disabled. Follow [the launch and payment guide](docs/PAYMENTS-AND-LAUNCH.md) to onboard a merchant account and implement verified checkout before taking card payments.
+
+Run `npm test` for storefront checks. The historical project notes below describe the previous application and do not establish that its payment, certification or fulfilment claims are verified.
+
+---
+
+# Historical project notes
 ### Ancient Wisdom, Modern Luxury — The Gold Standard of Ceylon Cinnamon
 
 ![Ceylone Zimt Banner](docs/assets/banner.png)

@@ -4,6 +4,8 @@
   "description": "Premium Ceylon Cinnamon E-Commerce",
   "private": true,
   "scripts": {
+    "build": "node scripts/build-store.cjs",
+    "test": "node scripts/check-store.cjs",
     "start": "cd backend && node src/server.js",
     "install-all": "npm install && cd backend && npm install",
     "dev": "cd backend && npm run dev"

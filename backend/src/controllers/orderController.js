@@ -138,38 +138,7 @@ exports.getOrderStats = async (req, res) => {
   }
 };
 
-const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
-
-// POST /api/orders/create-checkout-session
+// Disabled until a merchant account, trusted server pricing and verified webhooks are configured.
 exports.createCheckoutSession = async (req, res) => {
-  try {
-    const { items, currency = 'usd', successUrl, cancelUrl } = req.body;
-    
-    const line_items = await Promise.all(items.map(async item => {
-      const product = await Product.findById(item.productId);
-      if (!product) throw new Error('Product not found');
-      // For simplistic conversion from base USD to target currency, we apply the rate here or rely on Stripe.
-      // Easiest is to receive price exactly in target currency from the frontend.
-      return {
-        price_data: {
-          currency: currency.toLowerCase(),
-          product_data: { name: product.name },
-          unit_amount: Math.round(item.unit_amount * 100), // in cents
-        },
-        quantity: item.qty
-      };
-    }));
-
-    const session = await stripe.checkout.sessions.create({
-      payment_method_types: ['card'],
-      line_items,
-      mode: 'payment',
-      success_url: successUrl,
-      cancel_url: cancelUrl,
-    });
-
-    res.json({ id: session.id, url: session.url });
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
+  res.status(503).json({ success: false, error: 'Online payments are not enabled. Please send an order enquiry through the storefront.' });
 };
