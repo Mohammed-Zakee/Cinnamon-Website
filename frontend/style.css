@@ -134,10 +134,47 @@ dialog{border-radius:18px;padding:28px;overscroll-behavior:contain}
  font-display:swap;
 }
 html:lang(si) {
- --sans:'UN Malithi',sans-serif;
+ --sans:'Noto Sans Sinhala','UN Malithi',sans-serif;
  --serif:'UN Malithi',serif;
 }
 html:lang(si) h1,html:lang(si) h2,html:lang(si) h3 {
  letter-spacing:normal;
 }
-option[value="si"]{font-family:'UN Malithi',sans-serif}
+option[value="si"]{font-family:'Noto Sans Sinhala','UN Malithi',sans-serif}
+
+
+/* Compact Sinhala UI uses full Unicode mark positioning; Malithi remains on display headings. */
+@font-face {
+ font-family:'Noto Sans Sinhala';
+ src:url('/assets/fonts/NotoSansSinhala.ttf') format('truetype');
+ font-weight:100 900;
+ font-style:normal;
+ font-display:swap;
+}
+html:lang(si) body{line-height:1.9}
+html:lang(si) :is(p,button,a,select,label,summary,.product-tag,.product-meta,.eyebrow){letter-spacing:normal}
+html:lang(si) .product h3{
+ font-family:var(--sans);
+ font-weight:500;
+ font-size:22px;
+ line-height:1.8;
+ overflow-wrap:break-word;
+ word-break:normal;
+ margin-top:5px;
+ margin-bottom:12px;
+ padding-block:3px;
+}
+html:lang(si) :is(.product>p,.cart-row h3,.story-detail h3,.ritual h3){font-family:var(--sans);line-height:1.9}
+html:lang(si) .product>p{font-size:13px}
+html:lang(si) :is(.button,.add,.filters button,.mobile-dock a,.mobile-dock button){line-height:1.8}
+html:lang(si) .product-tag{font-size:10px;line-height:1.8}
+html:lang(si) .eyebrow{line-height:1.9}
+html:lang(si) :is(.brand,.brand small){font-family:'DM Sans',Arial,sans-serif}
+@media(max-width:700px){
+ html:lang(si) .product h3{font-size:19px}
+ html:lang(si) .product>p{font-size:12px}
+ html:lang(si) .product-tag{font-size:9px}
+ html:lang(si) .product-meta{line-height:1.9}
+ html:lang(si) .filters button{font-size:12px}
+ html:lang(si) .mobile-dock>a,html:lang(si) .mobile-dock>button{font-size:11px;min-width:0}
+}
