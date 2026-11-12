@@ -1,0 +1,15 @@
+.git/
+.env
+**/.env
+**/.env.*
+backend/
+ceylon-gold/
+published-store/
+node_modules/
+**/node_modules/
+docs/
+*.tar.gz
+100ml.jpeg
+10ml.jpeg
+Cinnamon Powder.jpeg
+Cinnamon Sticks.jpeg
