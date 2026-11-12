@@ -123,3 +123,21 @@ dialog{border-radius:18px;padding:28px;overscroll-behavior:contain}
 }
 @media(max-width:359px){.products{grid-template-columns:1fr}.product-img{aspect-ratio:1/1}.product h3{font-size:26px}.product>p{font-size:13px}.product-bottom{flex-direction:row;align-items:center}.add{width:auto;padding:10px 14px}.brand{font-size:23px!important}.mobile-dock>a,.mobile-dock>button{font-size:11px}}
 @media(prefers-reduced-motion:reduce){.button:hover,.product:hover{transform:none}}
+
+
+/* Locally hosted Sinhala typography; no external font request is needed. */
+@font-face {
+ font-family:'UN Malithi';
+ src:url('/assets/fonts/UN-Malithi-4.ttf') format('truetype');
+ font-style:normal;
+ font-weight:400;
+ font-display:swap;
+}
+html:lang(si) {
+ --sans:'UN Malithi',sans-serif;
+ --serif:'UN Malithi',serif;
+}
+html:lang(si) h1,html:lang(si) h2,html:lang(si) h3 {
+ letter-spacing:normal;
+}
+option[value="si"]{font-family:'UN Malithi',sans-serif}
