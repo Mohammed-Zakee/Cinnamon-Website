@@ -108,7 +108,7 @@ function renderProducts(){
  $('#products').innerHTML=catalog.filter(p=>filter==='all'||p.category===filter).map(p=>`<article class="product"><div class="product-img"><img src="/assets/${p.image}" alt="${productName(p)} ${p.unit||''}" loading="lazy"><span class="product-tag">${t(p.category==='oil'?'oils':p.category)}</span></div><div class="product-meta"><span>CEYLONE ZIMT</span><span>${p.unit||t('sizeAsk')}</span></div><h3>${productName(p)}</h3><p>${p.desc[languages.indexOf(lang)]}</p><div class="product-bottom"><span class="price">${price(p)}</span><button class="add" data-add="${p.id}">${t('add')}</button></div></article>`).join('');
 }
 function renderBag(){
- const count=Object.values(bag).reduce((a,b)=>a+b,0);$('#count').textContent=count;$('#orderForm').hidden=!count;$('#orderResult').hidden=true;
+ const count=Object.values(bag).reduce((a,b)=>a+b,0);$('#count').textContent=count;$('#mobileCount').textContent=count;$('#orderForm').hidden=!count;$('#orderResult').hidden=true;
  if(!count){$('#cartItems').textContent=t('empty');return}
  const selected=catalog.filter(p=>bag[p.id]);const total=bagTotal();
  $('#cartItems').innerHTML=selected.map(p=>`<div class="cart-row"><img src="/assets/${p.image}" alt=""><div><h3>${productName(p)} · ${p.unit||t('sizeAsk')}</h3><p>${price(p)}</p><button class="remove" data-remove="${p.id}">${t('remove')}</button></div><div class="quantity"><button data-qty="${p.id}" data-delta="-1" aria-label="${productName(p)} −">−</button><span>${bag[p.id]}</span><button data-qty="${p.id}" data-delta="1" aria-label="${productName(p)} +" ${bag[p.id]>=99?'disabled':''}>+</button></div></div>`).join('')+`<p style="margin-top:20px;font-size:13px">${t('estimate')}: <strong>${money(total)}</strong></p><p style="font-size:11px">${t('excluded')}</p>`;
@@ -118,7 +118,9 @@ $('#language').addEventListener('change',e=>{lang=e.target.value;save('cz_langua
 $('#currency').addEventListener('change',e=>{currency=e.target.value;save('cz_currency',currency);renderProducts();renderBag()});
 document.querySelectorAll('[data-filter]').forEach(b=>b.addEventListener('click',()=>{filter=b.dataset.filter;document.querySelectorAll('[data-filter]').forEach(x=>{x.classList.toggle('active',x===b);x.setAttribute('aria-pressed',String(x===b))});renderProducts()}));
 $('#products').addEventListener('click',e=>{const b=e.target.closest('[data-add]');if(!b)return;bag[b.dataset.add]=Math.min(99,(bag[b.dataset.add]||0)+1);save('cz_bag',bag);renderBag();notify(t('added'))});
-$('#bag').addEventListener('click',()=>{renderBag();$('#cart').showModal()});
+function openBag(){renderBag();$('#cart').showModal()}
+$('#bag').addEventListener('click',openBag);
+$('#mobileBag').addEventListener('click',openBag);
 document.querySelectorAll('[data-close]').forEach(b=>b.addEventListener('click',()=>document.getElementById(b.dataset.close).close()));
 document.querySelectorAll('dialog').forEach(d=>{d.addEventListener('click',e=>{if(e.target===d){const r=d.getBoundingClientRect();if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)d.close()}});d.addEventListener('close',()=>{document.body.style.overflow=''});new MutationObserver(()=>{document.body.style.overflow=document.querySelector('dialog[open]')?'hidden':''}).observe(d,{attributes:true,attributeFilter:['open']})});
 $('#cartItems').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;if(b.dataset.remove)delete bag[b.dataset.remove];if(b.dataset.qty){const id=b.dataset.qty;bag[id]=Math.min(99,bag[id]+Number(b.dataset.delta));if(bag[id]<=0)delete bag[id]}save('cz_bag',bag);renderBag()});
