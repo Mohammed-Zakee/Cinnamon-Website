@@ -334,3 +334,39 @@ html:lang(si) .order-steps h3{font-family:var(--sans);font-size:21px;line-height
 @media(max-width:359px){.hero-story-link{margin-left:0;display:flex;width:max-content;margin-top:10px}.product h3{font-size:26px}.product-preview{font-size:11px}}
 @media(prefers-reduced-motion:reduce){header nav a:after,.product-preview{transition:none}}
 @media(max-width:700px){.original-photo{margin:0 12px 10px;font-size:10px;min-height:32px;display:flex;align-items:center}.product-img img{object-fit:contain}}
+
+/* Motion stays on the compositor; it never controls whether content is available. */
+.reading-progress{display:none}
+.motion-enabled .reading-progress{display:block;position:fixed;z-index:30;left:0;right:0;top:0;height:2px;background:linear-gradient(90deg,#95633e,#d8b67a,#95633e);transform:scaleX(var(--reading-progress,0));transform-origin:left center;pointer-events:none}
+.motion-enabled header{transition:background .3s,box-shadow .3s}
+.motion-enabled header.motion-scrolled{background:#f8f6eef9;box-shadow:0 6px 28px #203d3110}
+.motion-enabled .hero-image>img{transform:translate3d(var(--photo-x,0px),var(--photo-y,0px),0) rotate(-1.4deg) scale(1.075);transition:transform .6s cubic-bezier(.2,.7,.2,1)}
+.motion-enabled .roundel{animation:seal-drift 7s ease-in-out infinite;animation-play-state:paused}
+.motion-enabled.hero-visible .roundel{animation-play-state:running}
+.motion-enabled .product{transition:transform .5s cubic-bezier(.2,.7,.2,1),box-shadow .4s}
+.motion-enabled .product:hover{transform:perspective(950px) translateY(-5px) rotateX(var(--tilt-x,0deg)) rotateY(var(--tilt-y,0deg));box-shadow:0 22px 42px #203d3115}
+.motion-enabled .product-img:after{content:'';position:absolute;inset:0;background:radial-gradient(circle at var(--glow-x,50%) var(--glow-y,35%),#fff9,transparent 58%);opacity:0;transition:opacity .4s;pointer-events:none;mix-blend-mode:soft-light;z-index:0}
+.motion-enabled .product:hover .product-img:after{opacity:.7}
+.product-preview,.product-tag{z-index:1}
+.motion-enabled .product-img img{transition:transform 1s cubic-bezier(.2,.7,.2,1)}
+.motion-enabled .product:hover .product-img img{transform:scale(1.045)}
+.motion-enabled .button{position:relative;overflow:hidden;isolation:isolate;transition:background .25s,transform .3s,box-shadow .3s}
+.motion-enabled .button:after{content:'';position:absolute;top:-50%;bottom:-50%;width:30%;left:-60%;background:linear-gradient(90deg,transparent,#ffffff24,transparent);transform:skewX(-22deg);transition:left .7s cubic-bezier(.2,.7,.2,1);pointer-events:none}
+.motion-enabled .button:hover:after{left:140%}
+.motion-enabled .button:hover{box-shadow:0 9px 22px #203d311a}
+.motion-enabled :is(.button,.add,.filters button,.bag,.mobile-dock button):active{transform:scale(.97)}
+.motion-enabled .ticker i{display:inline-block;transition:transform .8s cubic-bezier(.2,.7,.2,1)}
+.motion-enabled .ticker:hover i{transform:rotate(120deg)}
+.motion-enabled dialog[open]::backdrop{animation:backdrop-arrive .3s ease-out}
+.motion-enabled .toast.visible{animation:toast-arrive .3s cubic-bezier(.2,.7,.2,1)}
+@keyframes seal-drift{0%,100%{transform:translateY(0) rotate(12deg)}50%{transform:translateY(-6px) rotate(16deg)}}
+@keyframes backdrop-arrive{from{opacity:0}to{opacity:1}}
+@keyframes toast-arrive{from{opacity:0;transform:translate(-50%,10px)}to{opacity:1;transform:translate(-50%,0)}}
+@media(hover:none){.motion-enabled .product:hover{transform:none}.motion-enabled .product:hover .product-img img{transform:none}.motion-enabled .product-img:after{display:none}}
+@media(prefers-reduced-motion:reduce){
+ html{scroll-behavior:auto}
+ .reading-progress{display:none!important}
+ *,*::before,*::after{animation:none!important;transition:none!important}
+ .motion-enabled .hero-image>img{transform:rotate(-1.4deg) scale(1.04)}
+ .motion-enabled .product:hover,.motion-enabled .product:hover .product-img img{transform:none}
+}
