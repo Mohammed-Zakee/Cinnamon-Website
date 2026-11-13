@@ -49,6 +49,16 @@ const message=decodeURIComponent(a.element('#emailOrder').href.split('&body=')[1
 assert.match(message,/Test Buyer/);assert.match(message,/1 × Cinnamon sticks/);assert.match(message,/1 × Cinnamon powder/);assert.match(message,/Please confirm delivery/);
 assert.equal(boot({'cz_bag':'{"sticks":-2,"oil10":100000,"evil":1}'}).element('#count').textContent,0,'invalid quantities must not be loaded');
 assert.equal(boot({'cz_bag':'invalid json','cz_language':'"xx"'}).ctx.document.documentElement.lang,'en');
+const preview=boot();
+preview.element('#currency').listeners.change({target:{value:'EUR'}});
+preview.element('#products').listeners.click({target:{closest:selector=>selector==='[data-view]'?{dataset:{view:'sticks'}}:null}});
+assert.equal(preview.element('#productView').open,true,'product preview should open');
+assert.match(preview.element('#productDetails').innerHTML,/€8.90/);
+preview.element('#detailQty').value='2';
+preview.element('#productDetails').listeners.click({target:{closest:()=>({dataset:{detailAdd:'sticks'}})}});
+assert.equal(preview.element('#mobileCount').textContent,2,'selected quantity should reach the shared bag');
+assert.equal(preview.element('#productView').open,false,'preview should close after adding');
+assert.match(preview.element('#cartItems').innerHTML,/€17.80/);
 const html=fs.readFileSync(__dirname+'/../frontend/index.html','utf8');
 assert.ok(!html.includes('translate.google'));
 for(const file of ['app.js','style.css','assets/hero.png','assets/mark.svg',...['sticks','powder','oil-10','oil-100'].map(s=>'assets/'+s+'.jpeg')])assert.ok(fs.existsSync(__dirname+'/../frontend/'+file),file+' must exist');

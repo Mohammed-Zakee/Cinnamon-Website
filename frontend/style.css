@@ -184,4 +184,153 @@ html:lang(si) :is(.brand,.brand small){font-family:'DM Sans',Arial,sans-serif}
 
 .original-photo{display:block;align-self:flex-start;color:var(--muted);font-size:10px;line-height:1.5;margin:0 18px 12px;text-decoration:underline;text-underline-offset:3px}
 .original-photo:hover{color:var(--copper)}
+/* A quieter editorial finish: generous spacing, fine rules and sculpted photography. */
+:root{--paper:#f8f6ee;--copper:#95633e}
+body{background:var(--paper);-webkit-font-smoothing:antialiased}
+.announcement{font-size:9px;letter-spacing:.16em;background:#294436}
+header{padding-top:20px;padding-bottom:20px;background:#f8f6eef2;border-bottom-color:#d9ddd099}
+header nav a{position:relative;padding:7px 0}
+header nav a:after{content:'';position:absolute;left:0;bottom:0;width:0;height:1px;background:var(--copper);transition:width .25s}
+header nav a:hover:after{width:100%}
+.brand small{color:var(--muted)}
+.hero{padding-top:52px;padding-bottom:65px;gap:6%;align-items:center;min-height:700px}
+.hero-copy{padding:25px 0}
+.hero h1{font-size:clamp(52px,5.4vw,86px);line-height:1.06}
+.hero .eyebrow:before{content:'✳';font-size:15px;margin-right:12px;vertical-align:middle}
+.hero-image{border-radius:47% 47% 4px 4px;outline:1px solid #ae997a55;outline-offset:12px;transform:rotate(1.4deg);box-shadow:0 20px 55px #233b2914}
+.hero-image>img{min-height:550px;transform:rotate(-1.4deg) scale(1.04)}
+.hero-story-link{display:inline-flex;align-items:center;gap:16px;font-size:12px;margin:0 0 0 23px;padding:12px 0;border-bottom:1px solid #a5af9b}
+.hero-note{margin-top:34px}
+.roundel{background:#294436ed;outline:1px solid #f5e4c733;outline-offset:5px;right:25px}
+.ticker{background:#eeeee3;border-color:#d8ddcd;font-size:9px;padding-block:18px;letter-spacing:.12em}
+.section-heading h2{max-width:650px}
+.collection{padding-top:100px;padding-bottom:100px;overflow:clip}
+.hero-image .roundel{right:12%;top:12%}
+.collection .section-heading{margin-bottom:40px}
+.filters{margin-bottom:34px}
+.filters button{font-size:11px;border-color:#cfd5c4;transition:background .2s,color .2s}
+.products{gap:25px}
+.product{border-radius:4px;box-shadow:none;background:#fbfaf4;border-color:#dfdfd2}
+.product:hover{box-shadow:0 15px 35px #263c2c0d;transform:translateY(-3px)}
+.product-img{isolation:isolate;border-bottom:1px solid #e0daca}
+.product-tag{top:14px;left:14px;font-size:8px;letter-spacing:.08em;background:#faf8f1ef}
+.product-meta{margin-top:20px;letter-spacing:.04em}
+.product h3{font-size:26px;line-height:1.25;margin-bottom:10px}
+.product>p{font-size:12px;line-height:1.85;color:#64705f}
+.product-bottom{margin-top:3px;padding-top:18px;margin-bottom:20px}
+.add{border-radius:3px;font-size:10px;padding-inline:15px;letter-spacing:.01em}
+.price{font-size:16px;font-weight:500}
+.product-preview{position:absolute;inset:auto 12px 12px;display:flex;justify-content:space-between;gap:12px;align-items:center;border:1px solid #fff8;background:#f8f6eee8;color:var(--ink);padding:12px 14px;font-size:11px;border-radius:3px;opacity:0;transform:translateY(5px);transition:opacity .2s,transform .2s;backdrop-filter:blur(8px)}
+.product:hover .product-preview,.product-preview:focus-visible{opacity:1;transform:none}
+.story{background:#e8ecdf;gap:10%;position:relative}
+.story-photo{border-radius:48% 48% 4px 4px;height:580px;outline:1px solid #bac5ac;outline-offset:12px}
+.story-copy h2{max-width:520px}
+.story-detail{padding-block:24px}
+.story-detail h3{font-weight:600}
+.story-detail p{line-height:1.8}
+.ritual{display:grid;grid-template-columns:.85fr 1.15fr;align-items:center;gap:9%;text-align:left;background:#f3efe4}
+.ritual-visual{position:relative;overflow:hidden;border-radius:48% 48% 3px 3px;min-width:0}
+.ritual-visual>img{aspect-ratio:4/5;object-fit:cover}
+.ritual-visual-note{position:absolute;left:18px;bottom:18px;color:#f8f6ee;background:#294436e8;padding:9px 13px;font-size:8px;letter-spacing:.1em;max-width:calc(100% - 36px)}
+.ritual-content{min-width:0}
+.ritual-grid{grid-template-columns:1fr;gap:0;margin-top:34px}
+.ritual article{display:grid;grid-template-columns:45px minmax(0,1fr);gap:4px 16px;border:0;border-top:1px solid #d5d7c7;border-radius:0;background:none;padding:23px 0}
+.ritual article>*,.order-steps article>*{min-width:0}
+.order-steps h3,.ritual article h3{overflow-wrap:anywhere}
+.ritual article>span{grid-row:1/3;padding-top:5px}
+.ritual article h3{font-size:27px;margin:0}
+.ritual article p{grid-column:2;font-size:13px;line-height:1.8}
+.faq{border-top:0;padding-bottom:70px}
+.faq summary{font-size:15px}
+.order-guide{border-top:1px solid #d9ddd0;padding-top:60px;padding-bottom:80px}
+.order-guide h2{font-size:clamp(33px,3.2vw,46px)}
+.order-steps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:50px;margin-top:45px}
+.order-steps article{position:relative;border-top:1px solid #cdd4c2;padding-top:25px}
+.order-steps article>span{font-family:var(--serif);font-size:34px;font-style:italic;color:#aa8a62}
+.order-steps h3{font-family:var(--serif);font-size:25px;font-weight:400;line-height:1.4;margin:14px 0 12px}
+.order-steps p{font-size:13px;line-height:1.85;color:var(--muted)}
+.closing{position:relative;overflow:hidden;padding:85px 24px}
+.closing:before,.closing:after{content:'';position:absolute;width:250px;height:390px;border:1px solid #b8bc9240;border-radius:50%;transform:rotate(32deg);pointer-events:none}
+.closing:before{left:-160px;top:-110px}
+.closing:after{right:-140px;bottom:-130px}
+.closing h2,.closing>a,.closing>p{position:relative;z-index:1}
+footer{padding-top:60px;padding-bottom:28px}
+.product-view{width:min(850px,94vw);padding:0;overflow:auto;border-radius:8px}
+.product-close{position:absolute;right:14px;top:14px;z-index:3;box-shadow:0 3px 14px #0001}
+#productDetails{display:grid;grid-template-columns:1fr 1fr;min-width:0}
+.detail-image{background:#e8e1d1;min-width:0}
+.detail-image>img{height:100%;object-fit:cover}
+.detail-copy{padding:65px 35px 35px;min-width:0}
+.detail-copy h2{font-size:40px;line-height:1.3;overflow-wrap:anywhere}
+.detail-copy .eyebrow{font-size:9px}
+.detail-description{font-size:14px;line-height:1.9;color:var(--muted);margin:20px 0}
+.detail-price{display:block;font-family:var(--serif);font-weight:400;font-size:29px;margin:18px 0}
+.detail-quantity{display:flex;align-items:center;justify-content:space-between;border-top:1px solid var(--line);padding:18px 0;margin:16px 0 4px;font-size:12px}
+.detail-quantity select{width:72px;border:1px solid var(--line);padding:9px;font-size:16px;border-radius:4px}
+.detail-add{width:100%;justify-content:space-between;margin-top:4px}
+.detail-note{font-size:10px;line-height:1.8;color:var(--muted);margin-top:15px}
+.detail-copy .text-link{font-size:10px}
+html:lang(si) .order-steps h3{font-family:var(--sans);font-size:21px;line-height:1.8}
+@media(hover:none){.product-preview{opacity:1;transform:none}}
+@media(min-width:701px) and (max-width:1050px){.hero-story-link{margin-left:0;display:flex;width:max-content;margin-top:15px}.hero{min-height:630px}.hero-image>img{min-height:510px}.story-photo{height:520px}.ritual{gap:6%}.order-steps{gap:25px}}
+@media(max-width:700px){
+ header{padding:12px 5%;box-shadow:0 3px 20px #233b2906}
+ .hero{padding:34px 6% 50px;gap:40px;min-height:0;align-items:start}
+ .hero-copy{padding:0}
+ .hero h1{font-size:clamp(41px,11vw,60px)}
+ .hero .eyebrow:before{font-size:12px;margin-right:8px}
+ .hero .eyebrow{line-height:1.8}
+ .hero-story-link{font-size:11px;margin-left:16px;gap:8px}
+ .hero-note{margin-top:26px;font-size:9px}
+ .hero-image{width:calc(100% - 14px);margin-inline:7px;height:clamp(310px,90vw,430px);outline-offset:7px}
+ .hero-image>img{min-height:0}
+ .hero-image .roundel{right:16px;top:26px}
+ .collection{padding:55px 5%}
+ .collection .section-heading{margin-bottom:25px}
+ .section-heading h2{font-size:36px;line-height:1.2}
+ .products{gap:22px 12px}
+ .product{border-radius:4px}
+ .product-preview{inset:auto 8px 8px;padding:9px 10px;font-size:9px;opacity:1;transform:none;min-height:44px}
+ .product-tag{top:9px;left:9px;font-size:7px}
+ .product-meta{margin-top:14px;font-size:8px;letter-spacing:normal}
+ .product h3{font-size:22px;line-height:1.25}
+ .product>p{font-size:11px;line-height:1.85}
+ .product-bottom{padding-top:12px;margin-bottom:12px}
+ .price{font-size:15px}
+ .add{padding:10px 5px;font-size:11px}
+ .story{padding:55px 7%;gap:40px}
+ .story-photo{height:370px;outline-offset:7px}
+ .ritual{grid-template-columns:1fr;padding:55px 6%;gap:32px}
+ .ritual-visual{height:340px;max-width:450px;width:100%;margin:auto}
+ .ritual-visual>img{height:100%;object-fit:cover;object-position:50% 42%}
+ .ritual-content h2{font-size:36px}
+ .ritual-grid{margin-top:26px}
+ .ritual article{grid-template-columns:32px minmax(0,1fr);gap:5px 12px;padding:22px 0}
+ .ritual article h3{font-size:25px}
+ .ritual article p{font-size:13px}
+ .faq{padding:50px 6%}
+ .faq summary{font-size:13px;line-height:1.8}
+ .order-guide{padding:45px 6% 55px}
+ .order-guide h2{font-size:34px}
+ .order-steps{grid-template-columns:1fr;gap:25px;margin-top:30px}
+ .order-steps article{display:grid;grid-template-columns:38px minmax(0,1fr);gap:8px 16px;padding-top:20px}
+ .order-steps article>span{grid-row:1/3;font-size:30px}
+ .order-steps h3{font-size:24px;margin:0}
+ .order-steps p{grid-column:2;font-size:13px}
+ .closing{padding:65px 7%}
+ .product-view{width:100%;max-height:94dvh;border-radius:18px 18px 0 0}
+ #productDetails{grid-template-columns:1fr}
+ .detail-image{height:300px}
+ .detail-image>img{width:100%;object-fit:contain}
+ .detail-copy{padding:27px 24px 35px}
+ .detail-copy h2{font-size:34px}
+ .detail-copy .eyebrow{margin-bottom:12px}
+ .detail-description{font-size:13px;margin:14px 0}
+ .detail-price{font-size:28px;margin:14px 0}
+ .product-close{position:sticky;float:right;right:12px;top:12px;margin-bottom:-44px}
+ html:lang(si) .product-preview{font-size:10px;line-height:1.8}
+ html:lang(ta) .product-preview{font-size:9px;line-height:1.8}
+}
+@media(max-width:359px){.hero-story-link{margin-left:0;display:flex;width:max-content;margin-top:10px}.product h3{font-size:26px}.product-preview{font-size:11px}}
+@media(prefers-reduced-motion:reduce){header nav a:after,.product-preview{transition:none}}
 @media(max-width:700px){.original-photo{margin:0 12px 10px;font-size:10px;min-height:32px;display:flex;align-items:center}.product-img img{object-fit:contain}}

@@ -9,6 +9,16 @@ const languages=['en','si','ta','de'];
 const translations={en:{},si:{},ta:{},de:{}};
 function words(key,en,si,ta,de){[en,si,ta,de].forEach((v,i)=>translations[languages[i]][key]=v)}
 words('originalPhoto','Original packaging photo ↗','මුල් ඇසුරුම් ඡායාරූපය ↗','அசல் பொதியின் படம் ↗','Original-Verpackungsfoto ↗');
+words('viewDetails','View details','විස්තර බලන්න','விவரங்களைப் பார்க்க','Details ansehen');
+words('quantity','Quantity','ප්‍රමාණය','எண்ணிக்கை','Anzahl');
+words('orderGuideLabel','A PERSONAL WAY TO SHOP','පහසුවෙන් ඇණවුම් කරන්න','எளிதாக ஆர்டர் செய்யுங்கள்','PERSÖNLICH EINKAUFEN');
+words('orderGuideTitle','A thoughtful order, in three steps.','පියවර තුනකින් ඇණවුම් කරන්න.','மூன்று படிகளில் உங்கள் ஆர்டர்.','In drei Schritten zu Ihrer Auswahl.');
+words('step1Title','Find your favourites','ඔබ කැමති දේ තෝරන්න','விருப்பமானவற்றைத் தேர்வுசெய்யுங்கள்','Lieblinge auswählen');
+words('step1Copy','Explore the collection, take a closer look and add your chosen sizes to the bag.','එකතුවේ විස්තර බලන්න. ඔබ කැමති නිෂ්පාදන මල්ලට එක් කරන්න.','தொகுப்பின் விவரங்களைப் பார்த்து விருப்பமான பொருட்களைப் பையில் சேருங்கள்.','Entdecken Sie die Kollektion und legen Sie Ihre Auswahl in die Tasche.');
+words('step2Title','Make it personal','ඔබේ ඉල්ලීම යවන්න','உங்கள் கோரிக்கையை அனுப்புங்கள்','Persönlich anfragen');
+words('step2Copy','Review your bag and send an itemised enquiry from your email app.','මල්ල පරීක්ෂා කර ඔබේ ඊමේල් යෙදුමෙන් විමසීම යවන්න.','பையைச் சரிபார்த்து உங்கள் மின்னஞ்சல் செயலியிலிருந்து விசாரணையை அனுப்புங்கள்.','Prüfen Sie Ihre Tasche und senden Sie die Anfrage über Ihr E-Mail-Programm.');
+words('step3Title','We confirm the details','විස්තර තහවුරු කරගන්න','விவரங்களை உறுதிசெய்யுங்கள்','Details abstimmen');
+words('step3Copy','Availability, shipping and payment arrangements are agreed by email before you pay.','ගෙවීමට පෙර තොග, බෙදාහැරීම සහ ගෙවීම් ක්‍රමය ඊමේල් මගින් එකඟ කරගන්න.','பணம் செலுத்தும் முன் இருப்பு, அனுப்புதல் மற்றும் பணம் செலுத்தும் முறையை மின்னஞ்சலில் உறுதிசெய்யுங்கள்.','Verfügbarkeit, Versand und Zahlungsart stimmen wir vor der Zahlung per E-Mail ab.');
 words('announcement','FROM SRI LANKA, WITH WARMTH · DISCOVER THE CINNAMON COLLECTION','ශ්‍රී ලංකාවෙන් ආදරයෙන් · කුරුඳු එකතුව බලන්න','இலங்கையிலிருந்து அன்புடன் · பட்டைத் தொகுப்பைக் காணுங்கள்','AUS SRI LANKA, MIT HERZ · ENTDECKEN SIE UNSERE ZIMTKOLLEKTION');
 words('shop','The collection','එකතුව','தொகுப்பு','Kollektion');
 words('story','Our roots','අපේ කතාව','எங்கள் கதை','Unsere Wurzeln');
@@ -98,7 +108,7 @@ let lang=read('cz_language','en');if(!languages.includes(lang))lang='en';
 let currency=read('cz_currency','LKR');const rates={LKR:300,USD:1,EUR:.92,PLN:3.98};if(!rates[currency])currency='LKR';
 let bag=read('cz_bag',{});if(!bag||typeof bag!=='object'||Array.isArray(bag))bag={};
 bag=Object.fromEntries(catalog.filter(p=>Number.isInteger(bag[p.id])&&bag[p.id]>0&&bag[p.id]<=99).map(p=>[p.id,bag[p.id]]));
-let filter='all';let enquiry='';let toastTimer;
+let filter='all';let enquiry='';let toastTimer;let selectedProductId=null;
 const $=s=>document.querySelector(s);const t=k=>translations[lang][k];const productName=p=>p.names[languages.indexOf(lang)];
 const unitMinor=p=>Math.round(p.baseMinor*rates[currency]/rates[p.baseCurrency]);
 const money=minor=>new Intl.NumberFormat({en:'en-GB',si:'si-LK',ta:'ta-LK',de:'de-DE'}[lang],{style:'currency',currency}).format(minor/100);
@@ -106,7 +116,7 @@ const price=p=>money(unitMinor(p));
 const bagTotal=()=>catalog.reduce((sum,p)=>sum+unitMinor(p)*(bag[p.id]||0),0);
 function notify(text){$('#toast').textContent=text;$('#toast').classList.add('visible');clearTimeout(toastTimer);toastTimer=setTimeout(()=>$('#toast').classList.remove('visible'),3000)}
 function renderProducts(){
- $('#products').innerHTML=catalog.filter(p=>filter==='all'||p.category===filter).map(p=>`<article class="product"><div class="product-img"><img src="/assets/${p.image}" alt="${productName(p)} ${p.unit||''}" loading="lazy"><span class="product-tag">${t(p.category==='oil'?'oils':p.category)}</span></div><div class="product-meta"><span>CEYLONE ZIMT</span><span>${p.unit||t('sizeAsk')}</span></div><h3>${productName(p)}</h3><p>${p.desc[languages.indexOf(lang)]}</p><a class="original-photo" href="/assets/${p.originalImage}" target="_blank" rel="noopener" aria-label="${productName(p)}: ${t('originalPhoto')}">${t('originalPhoto')}</a><div class="product-bottom"><span class="price">${price(p)}</span><button class="add" data-add="${p.id}">${t('add')}</button></div></article>`).join('');
+ $('#products').innerHTML=catalog.filter(p=>filter==='all'||p.category===filter).map(p=>`<article class="product"><div class="product-img"><img src="/assets/${p.image}" alt="${productName(p)} ${p.unit||''}" loading="lazy"><button class="product-preview" data-view="${p.id}" aria-haspopup="dialog" aria-controls="productView" aria-label="${t('viewDetails')}: ${productName(p)}"><span>${t('viewDetails')}</span><span aria-hidden="true">↗</span></button><span class="product-tag">${t(p.category==='oil'?'oils':p.category)}</span></div><div class="product-meta"><span>CEYLONE ZIMT</span><span>${p.unit||t('sizeAsk')}</span></div><h3>${productName(p)}</h3><p>${p.desc[languages.indexOf(lang)]}</p><a class="original-photo" href="/assets/${p.originalImage}" target="_blank" rel="noopener" aria-label="${productName(p)}: ${t('originalPhoto')}">${t('originalPhoto')}</a><div class="product-bottom"><span class="price">${price(p)}</span><button class="add" data-add="${p.id}">${t('add')}</button></div></article>`).join('');
 }
 function renderBag(){
  const count=Object.values(bag).reduce((a,b)=>a+b,0);$('#count').textContent=count;$('#mobileCount').textContent=count;$('#orderForm').hidden=!count;$('#orderResult').hidden=true;
@@ -114,11 +124,20 @@ function renderBag(){
  const selected=catalog.filter(p=>bag[p.id]);const total=bagTotal();
  $('#cartItems').innerHTML=selected.map(p=>`<div class="cart-row"><img src="/assets/${p.image}" alt=""><div><h3>${productName(p)} · ${p.unit||t('sizeAsk')}</h3><p>${price(p)}</p><button class="remove" data-remove="${p.id}">${t('remove')}</button></div><div class="quantity"><button data-qty="${p.id}" data-delta="-1" aria-label="${productName(p)} −">−</button><span>${bag[p.id]}</span><button data-qty="${p.id}" data-delta="1" aria-label="${productName(p)} +" ${bag[p.id]>=99?'disabled':''}>+</button></div></div>`).join('')+`<p style="margin-top:20px;font-size:13px">${t('estimate')}: <strong>${money(total)}</strong></p><p style="font-size:11px">${t('excluded')}</p>`;
 }
-function render(){document.documentElement.lang=lang;document.querySelectorAll('[data-t]').forEach(el=>el.textContent=t(el.dataset.t));$('#language').value=lang;$('#currency').value=currency;renderProducts();renderBag()}
+function render(){document.documentElement.lang=lang;document.querySelectorAll('[data-t]').forEach(el=>el.textContent=t(el.dataset.t));if(selectedProductId)renderDetail();$('#language').value=lang;$('#currency').value=currency;renderProducts();renderBag()}
 $('#language').addEventListener('change',e=>{lang=e.target.value;save('cz_language',lang);render()});
-$('#currency').addEventListener('change',e=>{currency=e.target.value;save('cz_currency',currency);renderProducts();renderBag()});
+$('#currency').addEventListener('change',e=>{currency=e.target.value;save('cz_currency',currency);renderProducts();renderBag();if(selectedProductId)renderDetail()});
 document.querySelectorAll('[data-filter]').forEach(b=>b.addEventListener('click',()=>{filter=b.dataset.filter;document.querySelectorAll('[data-filter]').forEach(x=>{x.classList.toggle('active',x===b);x.setAttribute('aria-pressed',String(x===b))});renderProducts()}));
-$('#products').addEventListener('click',e=>{const b=e.target.closest('[data-add]');if(!b)return;bag[b.dataset.add]=Math.min(99,(bag[b.dataset.add]||0)+1);save('cz_bag',bag);renderBag();notify(t('added'))});
+$('#products').addEventListener('click',e=>{const view=e.target.closest('[data-view]');if(view&&view.dataset.view){selectedProductId=view.dataset.view;renderDetail();$('#productView').showModal();return}const b=e.target.closest('[data-add]');if(!b)return;bag[b.dataset.add]=Math.min(99,(bag[b.dataset.add]||0)+1);save('cz_bag',bag);renderBag();notify(t('added'))});
+function renderDetail(){
+ $('#productView').setAttribute('aria-label',t('viewDetails'));
+ const p=catalog.find(p=>p.id===selectedProductId);if(!p)return;
+ $('#productDetails').innerHTML=`<div class="detail-image"><img src="/assets/${p.image}" alt="${productName(p)}" width="1122" height="1402"></div><div class="detail-copy"><p class="eyebrow">CEYLONE ZIMT · ${p.unit}</p><h2>${productName(p)}</h2><p class="detail-description">${p.desc[languages.indexOf(lang)]}</p><strong class="detail-price">${price(p)}</strong><label class="detail-quantity"><span>${t('quantity')}</span><select id="detailQty">${Array.from({length:10},(_,i)=>`<option value="${i+1}">${i+1}</option>`).join('')}</select></label><button class="button detail-add" data-detail-add="${p.id}">${t('add')} <span aria-hidden="true">↗</span></button><p class="detail-note">${t('excluded')}</p><a class="text-link" href="/assets/${p.originalImage}" target="_blank" rel="noopener">${t('originalPhoto')}</a></div>`;
+}
+$('#productDetails').addEventListener('click',e=>{
+ const b=e.target.closest('[data-detail-add]');if(!b)return;const p=catalog.find(p=>p.id===b.dataset.detailAdd);if(!p)return;
+ const qty=Math.min(10,Math.max(1,parseInt($('#detailQty').value,10)||1));bag[p.id]=Math.min(99,(bag[p.id]||0)+qty);save('cz_bag',bag);renderBag();$('#productView').close();notify(t('added'));
+});
 function openBag(){renderBag();$('#cart').showModal()}
 $('#bag').addEventListener('click',openBag);
 $('#mobileBag').addEventListener('click',openBag);
