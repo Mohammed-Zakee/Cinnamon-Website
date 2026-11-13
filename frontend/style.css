@@ -230,7 +230,7 @@ header nav a:hover:after{width:100%}
 .story-detail p{line-height:1.8}
 .ritual{display:grid;grid-template-columns:.85fr 1.15fr;align-items:center;gap:9%;text-align:left;background:#f3efe4}
 .ritual-visual{position:relative;overflow:hidden;border-radius:48% 48% 3px 3px;min-width:0}
-.ritual-visual>img{aspect-ratio:4/5;object-fit:cover}
+.ritual-visual>img{width:100%;height:auto;aspect-ratio:4/5;object-fit:cover}
 .ritual-visual-note{position:absolute;left:18px;bottom:18px;color:#f8f6ee;background:#294436e8;padding:9px 13px;font-size:8px;letter-spacing:.1em;max-width:calc(100% - 36px)}
 .ritual-content{min-width:0}
 .ritual-grid{grid-template-columns:1fr;gap:0;margin-top:34px}
